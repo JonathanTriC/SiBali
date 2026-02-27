@@ -8,7 +8,9 @@ const LoginScreen: React.FC = () => {
     <View>
       <Text>Welcome to Login Screen</Text>
 
-      <TouchableOpacity onPress={() => navigateScreen('RegisterScreen')}>
+      <TouchableOpacity
+        onPress={() => navigateScreen('Auth', { screen: 'RegisterScreen' })}
+      >
         <Text>Register</Text>
       </TouchableOpacity>
     </View>

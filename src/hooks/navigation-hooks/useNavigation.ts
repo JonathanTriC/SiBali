@@ -1,4 +1,6 @@
+import { ParamList } from '@navigation/navigator/screen';
 import {
+  CommonActions,
   NavigationRouteContext,
   useNavigation,
 } from '@react-navigation/native';
@@ -12,15 +14,28 @@ export function useNavigate<T = any>() {
     any
   >;
 
-  const navigateScreen: <U>(screen: keyof ParamList, params?: U) => void = <U>(
-    screen: keyof ParamList,
-    params?: U,
+  const getRootNavigation = React.useCallback(
+    (
+      nav: StackNavigationProp<ParamList, any>,
+    ): StackNavigationProp<ParamList, any> => {
+      const parent = nav.getParent();
+      if (!parent) {
+        return nav;
+      }
+      return getRootNavigation(parent as StackNavigationProp<ParamList, any>);
+    },
+    [],
+  );
+
+  const navigateScreen = <K extends keyof ParamList>(
+    screen: K,
+    params?: ParamList[K],
   ) => {
     if (!navigation) {
       return;
     }
 
-    navigation?.navigate(screen as any, params);
+    navigation.navigate(screen as any, params as any);
   };
 
   const popScreen: VoidCallBack = (count?: number) => {
@@ -39,11 +54,14 @@ export function useNavigate<T = any>() {
     if (!navigation) {
       return;
     }
+    const rootNavigation = getRootNavigation(navigation);
 
-    navigation?.reset({
-      index: 0,
-      routes: [{ name: screen as never, params: param as never }],
-    });
+    rootNavigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: screen as string, params: param }],
+      }),
+    );
   };
 
   const getRouteParams: <U = T>() => U = <U>() => {

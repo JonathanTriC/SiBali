@@ -2303,6 +2303,35 @@ PODS:
     - SocketRocket
     - Yoga
   - SocketRocket (0.7.1)
+  - SplashView (0.0.21):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2382,6 +2411,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - SocketRocket (~> 0.7.1)
+  - SplashView (from `../node_modules/react-native-splash-view`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2538,6 +2568,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  SplashView:
+    :path: "../node_modules/react-native-splash-view"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2617,6 +2649,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 4089d198e5474209e2b77dfb503578e704dee4e6
   RNScreens: 7769b3511c8c7245694295a8e9d8ebb93cb4975c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  SplashView: c265b3815de27ed85b4b724d425661990f763e72
   Yoga: a742cc68e8366fcfc681808162492bc0aa7a9498
 
 PODFILE CHECKSUM: 45c89d8afc1f63ff65ae25f0754644f8e946fcea

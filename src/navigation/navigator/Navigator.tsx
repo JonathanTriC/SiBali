@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigator } from './useNavigator';
-import { LoginScreen, RegisterScreen } from '@modules/auth';
+import { AuthStack, CommonStack } from './stack';
+import { ParamList } from './screen';
 
 const Stack = createStackNavigator<ParamList>();
 type NavigatorProps = {};
@@ -10,14 +11,14 @@ export const Navigator: React.FC<NavigatorProps> = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="LoginScreen"
+      initialRouteName="Common"
       screenListeners={screenListeners}
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name={'LoginScreen'} component={LoginScreen} />
-      <Stack.Screen name={'RegisterScreen'} component={RegisterScreen} />
+      <Stack.Screen name={'Common'} component={CommonStack} />
+      <Stack.Screen name={'Auth'} component={AuthStack} />
     </Stack.Navigator>
   );
 };
