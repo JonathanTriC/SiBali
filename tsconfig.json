@@ -8,6 +8,7 @@
     "strictFunctionTypes": true,
     "types": ["jest"],
     "paths": {
+      "@api/*": ["src/api/*"],
       "@assets/*": ["src/assets/*"],
       "@constants/*": ["src/constants/*"],
       "@hooks/*": ["src/hooks/*"],

@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { Navigator } from '@navigation/navigator';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const RouteApp = () => {
   const MyTheme = {
@@ -14,15 +15,19 @@ export const RouteApp = () => {
     },
   };
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={'dark-content'} />
+  const queryClient = new QueryClient();
 
-      <GestureHandlerRootView style={styles.flex1}>
-        <NavigationContainer theme={MyTheme}>
-          <Navigator />
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <StatusBar barStyle={'dark-content'} />
+
+        <GestureHandlerRootView style={styles.flex1}>
+          <NavigationContainer theme={MyTheme}>
+            <Navigator />
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };
