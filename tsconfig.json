@@ -8,11 +8,19 @@
     "strictFunctionTypes": true,
     "types": ["jest"],
     "paths": {
+      "@api": ["src/api"],
       "@api/*": ["src/api/*"],
+      "@assets": ["src/assets"],
       "@assets/*": ["src/assets/*"],
+      "@constants*": ["src/constants"],
       "@constants/*": ["src/constants/*"],
+      "@components": ["src/components"],
+      "@components/*": ["src/components/*"],
+      "@hooks": ["src/hooks"],
       "@hooks/*": ["src/hooks/*"],
+      "@modules*": ["src/modules"],
       "@modules/*": ["src/modules/*"],
+      "@navigation": ["src/navigation"],
       "@navigation/*": ["src/navigation/*"]
     }
   },

@@ -1,26 +1,33 @@
-import { useNavigate } from '@hooks/navigation-hooks';
+import { Button, Text, TextField } from '@components';
+import { useNavigate } from '@hooks';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+
+import { View } from 'react-native';
 
 const LoginScreen: React.FC = () => {
   const { navigateScreen } = useNavigate();
   return (
     <View>
-      <Text style={{ fontFamily: 'Mulish-Light' }}>
-        Welcome to Login Screen Light
-      </Text>
-      <Text style={{ fontFamily: 'Mulish' }}>Welcome to Login Screen</Text>
-      <Text style={{ fontFamily: 'Mulish-Bold' }}>
-        Welcome to Login Screen Bold
-      </Text>
+      <Text text="Welcome to Login Screen Light" type="light-base" />
+      <Text text="Welcome to Login Screen" type="regular-base" />
+      <Text text="Welcome to Login Screen Bold" type="bold-base" />
+
       <MaterialDesignIcons name="home" size={24} color="#000" />
 
-      <TouchableOpacity
-        onPress={() => navigateScreen('Auth', { screen: 'RegisterScreen' })}
-      >
-        <Text>Register</Text>
-      </TouchableOpacity>
+      <TextField
+        secure
+        placeholder="Password"
+        leftIcon="lock"
+        onChangeText={() => {}}
+      />
+
+      <Button
+        label="Register"
+        // primaryLight
+        icon="chevron-right"
+        action={() => navigateScreen('Auth', { screen: 'RegisterScreen' })}
+      />
     </View>
   );
 };
