@@ -19,9 +19,11 @@ export const styles = StyleSheet.create({
     fontFamily: 'Mulish-Regular',
   },
   subLabel: {
-    fontFamily: 'Mulish-Regular',
-    color: Colors.white,
+    marginTop: 4,
+    color: Colors.neutral.base,
     fontSize: 12,
-    marginTop: 8,
+    fontWeight: '400',
+    lineHeight: 16,
+    fontFamily: 'Mulish-Regular',
   },
 });

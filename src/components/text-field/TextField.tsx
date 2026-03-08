@@ -5,6 +5,7 @@ import {
   Pressable,
   ReturnKeyTypeOptions,
   Text,
+  TextStyle,
   View,
 } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
@@ -54,7 +55,7 @@ export type TextFieldProps = {
   placeholderTextColor?: any;
   onPress?: TextInputProps['onPressOut'];
   subLabel?: string;
-  subLabelStyle?: any;
+  subLabelStyle?: TextStyle;
   editable?: boolean;
   onEndEditing?: TextInputProps['onEndEditing'];
   disabledRightIcon?: boolean;
@@ -102,6 +103,7 @@ const TextField: FC<TextFieldProps> = ({
   maskEntry = false,
   placeholderTextColor = Colors.primary.light2,
   onEndEditing,
+  subLabel,
   subLabelStyle,
   disabledRightIcon,
   defaultValue,
@@ -125,6 +127,7 @@ const TextField: FC<TextFieldProps> = ({
             color: labelColor ?? Colors.neutral.base,
             letterSpacing: 0.25,
             lineHeight: 22,
+            fontWeight: 'bold',
           }}
         >
           {label}
@@ -217,11 +220,9 @@ const TextField: FC<TextFieldProps> = ({
           defaultValue={defaultValue}
         />
 
-        {props.subLabel && (
-          <Text style={[styles.subLabel, subLabelStyle && subLabelStyle]}>
-            {props.subLabel}
-          </Text>
-        )}
+        {subLabel ? (
+          <Text style={[styles.subLabel, subLabelStyle]}>{subLabel}</Text>
+        ) : null}
 
         {errorMessage ? (
           <Text style={[styles.errorHelperText, errorMessageStyle]}>
