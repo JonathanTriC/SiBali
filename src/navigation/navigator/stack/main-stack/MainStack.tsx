@@ -1,26 +1,38 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import { useNavigator } from '@navigation/navigator/useNavigator';
-import { HomeScreen } from '@modules';
+import { HomeScreen } from '@modules/main/home';
+import { ProfileScreen } from '@modules/main/profile';
+import { BottomNavbar } from '@modules/main/bottom-navbar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
+import { DiscoverScreen, ItineraryScreen } from '@modules';
 
-const Stack = createStackNavigator<MainStackParamList>();
+const Tab = createBottomTabNavigator<MainStackParamList>();
 type MainStackProps = {};
+
+const TabBar = (props: BottomTabBarProps) => <BottomNavbar {...props} />;
 
 export const MainStack: React.FC<MainStackProps> = () => {
   const { screenListeners } = useNavigator();
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <Stack.Navigator
+      <Tab.Navigator
         initialRouteName="HomeScreen"
         screenListeners={screenListeners}
         screenOptions={{
           headerShown: false,
         }}
+        tabBar={TabBar}
       >
-        <Stack.Screen name={'HomeScreen'} component={HomeScreen} />
-      </Stack.Navigator>
+        <Tab.Screen name={'HomeScreen'} component={HomeScreen} />
+        <Tab.Screen name={'DiscoverScreen'} component={DiscoverScreen} />
+        <Tab.Screen name={'ItineraryScreen'} component={ItineraryScreen} />
+        <Tab.Screen name={'ProfileScreen'} component={ProfileScreen} />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 };
