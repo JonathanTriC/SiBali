@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigator } from './useNavigator';
-import { AuthStack, CommonStack } from './stack';
+import { AuthStack, CommonStack, MainStack } from './stack';
 import { ParamList } from './screen';
 
 const Stack = createStackNavigator<ParamList>();
@@ -19,6 +19,7 @@ export const Navigator: React.FC<NavigatorProps> = () => {
     >
       <Stack.Screen name={'Common'} component={CommonStack} />
       <Stack.Screen name={'Auth'} component={AuthStack} />
+      <Stack.Screen name={'Main'} component={MainStack} />
     </Stack.Navigator>
   );
 };

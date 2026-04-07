@@ -7,21 +7,16 @@ export const styles = StyleSheet.create({
   },
   container: {
     flexGrow: 1,
+    marginTop: 24,
     paddingHorizontal: 20,
   },
-  blobContainer: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
   headerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  backContainer: {
-    padding: 10,
-    borderRadius: 30,
-    backgroundColor: Colors.primary.light,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.neutral.secondaryDark,
   },
   rightHeader: {
     height: 44,

@@ -1,126 +1,157 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Button, Text, TextField } from '@components';
-import useLogin from './useLogin';
 import { Logo } from '@assets/images';
-import { styles } from './styles';
-import { Colors } from '@constants/colors';
-import { globalStyles } from '@constants/globalStyles';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Controller } from 'react-hook-form';
+import LinearGradient from 'react-native-linear-gradient';
+import { styles } from './styles';
+import { Colors } from '@constants/colors/Colors';
+import { globalStyles } from '@constants/globalStyles';
+import useLogin from './useLogin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen: React.FC = () => {
-  const { control, formState, navigateScreen, handleSubmit, onSubmit } =
-    useLogin();
+  const {
+    control,
+    formState,
+    // isPending,
+    navigateScreen,
+    handleSubmit,
+    onSubmit,
+  } = useLogin();
 
   return (
     <View style={styles.screen}>
       <KeyboardAwareScrollView
-        contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.logoContainer}>
-          <Logo />
-        </View>
-
-        {/* Title */}
-        <View style={globalStyles.gap10}>
-          <Text
-            text="Plan Your Escape"
-            type="bold-xl"
-            textAlign="center"
-            color={Colors.primary.base}
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <LinearGradient
+            colors={['#005B8C', '#083344']}
+            start={{ x: 0.85, y: 0.85 }}
+            end={{ x: 0.15, y: 0.15 }}
+            style={styles.headerBackground}
           />
-          <Text
-            text="Your Personalized Journey in Bali."
-            type="regular-base"
-            textAlign="center"
-            color={Colors.primary.base}
-          />
-        </View>
-
-        {/* Form */}
-        <View style={[globalStyles.gap20, { marginVertical: 60 }]}>
-          <Controller
-            control={control}
-            name={'email'}
-            render={({
-              field: { value, onChange, onBlur },
-              fieldState: { error },
-            }) => (
-              <TextField
-                placeholder="Email Address"
-                leftIcon="email-outline"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-                keyboardType="email-address"
-                errorMessage={error?.message}
+          <View style={styles.gap40}>
+            <View style={styles.logoContainer}>
+              <Logo />
+            </View>
+            <View style={styles.gap8}>
+              <Text
+                text="Plan Your Escape"
+                type="bold-2xl"
+                color={Colors.white}
+                textAlign="center"
               />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name={'password'}
-            render={({
-              field: { value, onChange, onBlur },
-              fieldState: { error },
-            }) => (
-              <TextField
-                secure
-                placeholder="Password"
-                leftIcon="lock"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-                returnKeyType="done"
-                errorMessage={error?.message}
+              <Text
+                text="Your Personalized Journey in Bali."
+                type="regular-base"
+                color={Colors.white}
+                textAlign="center"
               />
-            )}
-          />
-
-          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-            <Text
-              text="Forgot Password"
-              type="bold-base"
-              color={Colors.primary.base}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Button */}
-        <View style={[globalStyles.gap10, { width: '100%' }]}>
-          <View>
-            <Button
-              isDisabled={!formState.isValid}
-              label="Log In"
-              icon="chevron-right"
-              action={handleSubmit(onSubmit)}
-            />
-          </View>
-          <View>
-            <Button
-              label="Create Account"
-              primaryLight
-              action={() =>
-                navigateScreen('Auth', { screen: 'RegisterScreen' })
-              }
-            />
+            </View>
           </View>
         </View>
 
-        {/* TNC */}
-        <TouchableOpacity style={styles.termsConditionContainer}>
-          <Text
-            text={'By continuing, you agree to our Terms\n& Privacy Policy'}
-            type="regular-base"
-            textAlign="center"
-            color={Colors.primary.base}
-            style={{ textDecorationLine: 'underline' }}
-          />
-        </TouchableOpacity>
+        <View style={styles.container}>
+          {/* Form */}
+          <View style={[globalStyles.gap20]}>
+            <Controller
+              control={control}
+              name={'email'}
+              render={({
+                field: { value, onChange, onBlur },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  label="Email"
+                  placeholder="Email Address"
+                  leftIcon="email-outline"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  keyboardType="email-address"
+                  errorMessage={error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name={'password'}
+              render={({
+                field: { value, onChange, onBlur },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  secure
+                  label="Password"
+                  placeholder="Password"
+                  leftIcon="lock"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  returnKeyType="done"
+                  errorMessage={error?.message}
+                />
+              )}
+            />
+
+            <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+              <Text
+                text="Forgot Password?"
+                type="bold-base"
+                color={Colors.primary.base}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Button */}
+          <View style={[globalStyles.gap20, { width: '100%' }]}>
+            <View>
+              <Button
+                isDisabled={!formState.isValid}
+                label="Log In"
+                action={handleSubmit(onSubmit)}
+              />
+            </View>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}
+            >
+              <View
+                style={{
+                  height: 1,
+                  flex: 1,
+                  backgroundColor: Colors.neutral.secondaryDark,
+                }}
+              />
+              <Text
+                text="or"
+                type="regular-base"
+                color={Colors.neutral.secondary}
+              />
+              <View
+                style={{
+                  height: 1,
+                  flex: 1,
+                  backgroundColor: Colors.neutral.secondaryDark,
+                }}
+              />
+            </View>
+            <View>
+              <Button
+                label="Create Account"
+                primaryLight
+                action={() =>
+                  navigateScreen('Auth', { screen: 'RegisterScreen' })
+                }
+              />
+            </View>
+          </View>
+        </View>
       </KeyboardAwareScrollView>
     </View>
   );

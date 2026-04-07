@@ -72,7 +72,7 @@ const TextField: FC<TextFieldProps> = ({
   placeholder,
   leftIcon,
   rightIcon,
-  iconColor = Colors.primary.light2,
+  iconColor = Colors.primary.base,
   onPressIcon,
   errorMessage,
   errorMessageStyle,
@@ -86,7 +86,7 @@ const TextField: FC<TextFieldProps> = ({
   isNotOutline,
   secure,
   leftOnPressIcon,
-  leftIconColor = Colors.primary.light2,
+  leftIconColor = Colors.primary.base,
   disabled,
   inputMode,
   borderColor,
@@ -97,11 +97,11 @@ const TextField: FC<TextFieldProps> = ({
   onFocus,
   onSubmitEditing,
   inputTextStyle,
-  borderRadius = 30,
+  borderRadius = 16,
   multiline,
   editable,
   maskEntry = false,
-  placeholderTextColor = Colors.primary.light2,
+  placeholderTextColor = Colors.neutral.secondary,
   onEndEditing,
   subLabel,
   subLabelStyle,
@@ -124,10 +124,9 @@ const TextField: FC<TextFieldProps> = ({
       {label && (
         <Text
           style={{
-            color: labelColor ?? Colors.neutral.base,
+            color: labelColor ?? Colors.neutral.secondary,
             letterSpacing: 0.25,
             lineHeight: 22,
-            fontWeight: 'bold',
           }}
         >
           {label}
@@ -136,7 +135,7 @@ const TextField: FC<TextFieldProps> = ({
       )}
       <Pressable onPress={props.onPress}>
         <TextInput
-          textColor={Colors.primary.base}
+          textColor={Colors.neutral.base}
           testID={testID}
           multiline={multiline ?? false}
           disabled={disabled}
@@ -165,7 +164,7 @@ const TextField: FC<TextFieldProps> = ({
               ? Colors.neutral.base
               : disabled
               ? Colors.neutral.disabled
-              : Colors.primary.light,
+              : Colors.neutral.secondaryLight,
             ...inputTextStyle,
           }}
           outlineStyle={{
@@ -174,7 +173,7 @@ const TextField: FC<TextFieldProps> = ({
               ? Colors.danger.base
               : successMessage
               ? Colors.success.base
-              : Colors.primary.base,
+              : Colors.neutral.secondaryDark,
             borderWidth: errorMessage || successMessage ? 1 : 1,
           }}
           error={error}

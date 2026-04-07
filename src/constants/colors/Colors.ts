@@ -1,12 +1,16 @@
 const Colors = {
   primary: {
     base: '#005B8C',
+    secondary: '#F2F7F9',
     disabled: '#7CAAC4',
     light: '#E1F5FA',
     light2: '#65A5C2',
   },
   neutral: {
     base: '#2C2C2C',
+    secondary: '#6C757D',
+    secondaryLight: '#F8FAFC',
+    secondaryDark: '#E9ECEF',
     disabled: '#CACDD2',
   },
   danger: {

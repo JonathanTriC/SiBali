@@ -54,7 +54,7 @@ const Button = ({
   success = false,
   primaryLight = false,
   fontSize = 16,
-  borderColor = Colors.primary.base,
+  borderColor = 'transparent',
   borderWidth = 0,
   customDisabled = false,
   iconLeft,
@@ -172,7 +172,7 @@ const styleProps = (
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
-      borderRadius: 30,
+      borderRadius: 16,
       backgroundColor: isDisabled
         ? Colors.primary.disabled
         : danger
@@ -180,17 +180,13 @@ const styleProps = (
         : success
         ? Colors.success.base
         : primaryLight
-        ? Colors.primary.light
+        ? Colors.white
         : background,
-      borderColor: outline
-        ? Colors.primary.base
-        : borderColor
-        ? borderColor
-        : '#C2185B',
+      borderColor: outline ? Colors.primary.base : borderColor,
       marginTop: top,
       marginBottom: bottom,
-      borderWidth: outline ? 1 : borderWidth ? borderWidth : 0,
-      paddingVertical: 12,
+      borderWidth: outline ? 2 : borderWidth ? borderWidth : 0,
+      paddingVertical: 16,
       opacity: pressed ? 0.5 : 1,
     },
     text: {

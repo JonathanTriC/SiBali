@@ -1,27 +1,34 @@
+import { screenHeight } from '@constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  headerContainer: {
+    height: screenHeight / 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerBackground: {
+    ...StyleSheet.absoluteFillObject,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+  },
+  logoContainer: {
+    alignItems: 'center',
+  },
   container: {
     flexGrow: 1,
     alignItems: 'center',
+    marginTop: 32,
     paddingHorizontal: 20,
+    gap: 60,
   },
-  logoContainer: {
-    marginVertical: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+  gap8: {
+    gap: 8,
   },
-  termsConditionContainer: {
-    position: 'absolute',
-    bottom: 40,
+  gap40: {
+    gap: 40,
   },
 });

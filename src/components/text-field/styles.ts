@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   subLabel: {
     marginTop: 4,
-    color: Colors.neutral.base,
+    color: Colors.neutral.secondary,
     fontSize: 12,
     fontWeight: '400',
     lineHeight: 16,

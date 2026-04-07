@@ -1,0 +1,3 @@
+type MainStackParamList = {
+  HomeScreen: undefined;
+};
