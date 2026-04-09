@@ -3,9 +3,9 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { useNavigator } from '@navigation/navigator/useNavigator';
-import { HomeScreen } from '@modules/main/home';
-import { ProfileScreen } from '@modules/main/profile';
-import { BottomNavbar } from '@modules/main/bottom-navbar';
+import { HomeScreen } from '@modules/main/screens/home';
+import { ProfileScreen } from '@modules/main/screens/profile';
+import { BottomNavbar } from '@modules/main/screens/bottom-navbar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
 import { DiscoverScreen, ItineraryScreen } from '@modules';

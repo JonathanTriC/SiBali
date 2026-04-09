@@ -50,7 +50,7 @@ export type TextFieldProps = {
   returnKeyType?: ReturnKeyTypeOptions;
   inputTextStyle?: any;
   borderRadius?: any;
-  multiline?: any;
+  multiline?: boolean;
   maskEntry?: any;
   placeholderTextColor?: any;
   onPress?: TextInputProps['onPressOut'];

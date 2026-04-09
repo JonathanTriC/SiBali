@@ -10,6 +10,7 @@ const Colors = {
     base: '#2C2C2C',
     secondary: '#6C757D',
     secondaryLight: '#F8FAFC',
+    secondaryLight2: '#E7EFF3',
     secondaryDark: '#E9ECEF',
     disabled: '#CACDD2',
   },

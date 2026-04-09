@@ -48,7 +48,7 @@ const Button = ({
   top = 0,
   bottom = 0,
   isDisabled = false,
-  outline = true,
+  outline = false,
   style = {},
   danger = false,
   success = false,
@@ -181,6 +181,8 @@ const styleProps = (
         ? Colors.success.base
         : primaryLight
         ? Colors.white
+        : outline
+        ? Colors.white
         : background,
       borderColor: outline ? Colors.primary.base : borderColor,
       marginTop: top,
@@ -195,13 +197,14 @@ const styleProps = (
       fontSize: fontSize,
       fontWeight: '600',
       fontFamily: 'Mulish-Bold',
-      color: primaryLight
-        ? Colors.primary.base
-        : danger
-        ? Colors.danger.base
-        : success
-        ? Colors.white
-        : color,
+      color:
+        primaryLight || outline
+          ? Colors.primary.base
+          : danger
+          ? Colors.danger.base
+          : success
+          ? Colors.white
+          : color,
     },
   });
 
