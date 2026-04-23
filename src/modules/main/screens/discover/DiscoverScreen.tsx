@@ -84,13 +84,13 @@ const StepTwoDiscover = ({
   return (
     <View style={[globalStyles.gap24, globalStyles.wfull]}>
       <Text
-        text={'What kind of experience are\nyou looking for?'}
+        text={'What interests you?'}
         type="bold-xl"
         color={Colors.neutral.base}
         textAlign="center"
       />
       <Text
-        text="Select all that apply"
+        text="Choose all the experiences and activities you'd like"
         type="regular-lg"
         color={Colors.neutral.secondary}
         textAlign="center"
@@ -153,12 +153,16 @@ const StepTwoDiscover = ({
 
 const StepThreeDiscover = ({
   dummyBudget,
+  customBudget,
   selectedBudgetIds,
+  setCustomBudget,
   onSelectBudget,
   onContinue,
 }: {
   dummyBudget: { id: number; text: string }[];
+  customBudget: number;
   selectedBudgetIds: number;
+  setCustomBudget: React.Dispatch<React.SetStateAction<number>>;
   onSelectBudget: (id: number) => void;
   onContinue: () => void;
 }) => {
@@ -168,6 +172,13 @@ const StepThreeDiscover = ({
         text={"What's your budget range?"}
         type="bold-xl"
         color={Colors.neutral.base}
+        textAlign="center"
+      />
+
+      <Text
+        text="Select your daily budget per person"
+        type="regular-lg"
+        color={Colors.neutral.secondary}
         textAlign="center"
       />
 
@@ -184,10 +195,12 @@ const StepThreeDiscover = ({
           return (
             <TouchableOpacity
               key={item.id}
-              style={{ width: '47%', marginTop: 8 }}
+              style={{ flex: 1, marginTop: 8 }}
               onPress={() => {
                 onSelectBudget(item.id);
-                onContinue();
+                if (item.id !== 4) {
+                  onContinue();
+                }
               }}
             >
               <View
@@ -196,7 +209,7 @@ const StepThreeDiscover = ({
                   isActive ? styles.step2ActiveExperienceItem : {},
                 ]}
               >
-                <Text text={item.text} textAlign="center" />
+                <Text text={item.text} textAlign="center" numberOfLines={2} />
               </View>
               <View
                 style={[
@@ -219,166 +232,98 @@ const StepThreeDiscover = ({
           );
         }}
       />
+
+      {selectedBudgetIds === 4 ? (
+        <View style={globalStyles.gap12}>
+          <TextField
+            label="Enter your daily budget (Rp)"
+            value={customBudget}
+            placeholder="e.g., 750000"
+            onChangeText={(text: string) => setCustomBudget(Number(text))}
+          />
+
+          <Text
+            text="Enter amount in Rupiah per day per person"
+            type="regular-sm"
+            color={Colors.neutral.secondary}
+            textAlign="center"
+          />
+
+          <Button
+            label={`Continue`}
+            isDisabled={customBudget === 0}
+            action={onContinue}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
 
 const StepFourDiscover = ({
-  dummyTravelPartners,
-  selectedTravelPartnersIds,
-  onSelectTravelPartners,
+  adults,
+  childrens,
+  onChangeAdults,
+  onChangeChildrens,
   onContinue,
 }: {
-  dummyTravelPartners: { id: number; text: string }[];
-  selectedTravelPartnersIds: number;
-  onSelectTravelPartners: (id: number) => void;
+  adults: number;
+  childrens: number;
+  onChangeAdults: (val: number) => void;
+  onChangeChildrens: (val: number) => void;
   onContinue: () => void;
 }) => {
   return (
     <View style={[globalStyles.gap24, globalStyles.wfull]}>
       <Text
-        text={'Who are you traveling with?'}
+        text={'How many travelers?'}
         type="bold-xl"
         color={Colors.neutral.base}
         textAlign="center"
       />
 
-      <FlatList
-        data={dummyTravelPartners}
-        numColumns={2}
-        scrollEnabled={false}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        style={globalStyles.flex1}
-        contentContainerStyle={[globalStyles.gap12]}
-        columnWrapperStyle={globalStyles.gap12}
-        renderItem={({ item }) => {
-          const isActive = selectedTravelPartnersIds === item?.id;
-          return (
-            <TouchableOpacity
-              key={item.id}
-              style={{ width: '47%', marginTop: 8 }}
-              onPress={() => {
-                onSelectTravelPartners(item.id);
-                onContinue();
-              }}
-            >
-              <View
-                style={[
-                  styles.step2ExperienceItem,
-                  isActive ? styles.step2ActiveExperienceItem : {},
-                ]}
-              >
-                <Text text={item.text} textAlign="center" />
-              </View>
-              <View
-                style={[
-                  styles.step2CheckIcon,
-                  {
-                    backgroundColor: isActive
-                      ? Colors.primary.base
-                      : 'transparent',
-                    borderColor: isActive ? Colors.white : 'transparent',
-                  },
-                ]}
-              >
-                <MaterialDesignIcons
-                  name="check"
-                  size={16}
-                  color={Colors.white}
-                />
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </View>
-  );
-};
-
-const StepFiveDiscover = ({
-  dummyActivities,
-  selectedActivitiesIds,
-  isMinSelectedActivities,
-  toggleActivities,
-  onContinue,
-}: {
-  dummyActivities: { id: number; text: string }[];
-  selectedActivitiesIds: number[];
-  isMinSelectedActivities: boolean;
-  toggleActivities: (id: number) => void;
-  onContinue: () => void;
-}) => {
-  return (
-    <View style={[globalStyles.gap24, globalStyles.wfull]}>
       <Text
-        text={'What activities interest you?'}
-        type="bold-xl"
-        color={Colors.neutral.base}
-        textAlign="center"
-      />
-      <Text
-        text="Select all that apply"
+        text="Enter the number of adults and children"
         type="regular-lg"
         color={Colors.neutral.secondary}
         textAlign="center"
       />
 
-      <FlatList
-        data={dummyActivities}
-        numColumns={2}
-        scrollEnabled={false}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        style={globalStyles.flex1}
-        contentContainerStyle={[globalStyles.gap12]}
-        columnWrapperStyle={globalStyles.gap12}
-        renderItem={({ item }) => {
-          const isActive = selectedActivitiesIds.includes(item.id);
-          return (
-            <TouchableOpacity
-              key={item.id}
-              style={{ width: '47%', marginTop: 8 }}
-              onPress={() => toggleActivities(item.id)}
-            >
-              <View
-                style={[
-                  styles.step2ExperienceItem,
-                  isActive ? styles.step2ActiveExperienceItem : {},
-                ]}
-              >
-                <Text text={item.text} textAlign="center" />
-              </View>
-              <View
-                style={[
-                  styles.step2CheckIcon,
-                  {
-                    backgroundColor: isActive
-                      ? Colors.primary.base
-                      : 'transparent',
-                    borderColor: isActive ? Colors.white : 'transparent',
-                  },
-                ]}
-              >
-                <MaterialDesignIcons
-                  name="check"
-                  size={16}
-                  color={Colors.white}
-                />
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      <View style={styles.step1CounterRow}>
+        <View style={styles.step1CounterItem}>
+          <Text
+            text="Adults"
+            type="regular-base"
+            color={Colors.neutral.secondary}
+          />
+          <CounterInput
+            value={adults}
+            min={1}
+            max={10}
+            onChange={onChangeAdults}
+          />
+        </View>
+        <View style={styles.step1CounterItem}>
+          <Text
+            text="Children"
+            type="regular-base"
+            color={Colors.neutral.secondary}
+          />
+          <CounterInput
+            value={childrens}
+            min={0}
+            max={10}
+            onChange={onChangeChildrens}
+          />
+        </View>
+      </View>
 
-      <Button
-        label={`Continue (${selectedActivitiesIds?.length} selected)`}
-        isDisabled={!isMinSelectedActivities}
-        action={onContinue}
-      />
+      <Button label="Continue" action={onContinue} />
     </View>
   );
 };
 
-const StepSixDiscover = ({
+const StepFiveDiscover = ({
   onAddCustomPreferences,
   onGenerateItinerary,
 }: {
@@ -410,7 +355,7 @@ const StepSixDiscover = ({
   );
 };
 
-const StepSixDiscoverPreference = ({
+const StepFiveDiscoverPreference = ({
   onBack,
   onGenerate,
 }: {
@@ -505,25 +450,24 @@ const DiscoverScreen: React.FC = () => {
     pagerRef,
     dummyExperience,
     dummyBudget,
-    dummyTravelPartners,
-    dummyActivities,
     days,
     nights,
     isMinSelectedExperience,
-    isMinSelectedActivities,
     currentStep,
     selectedExperienceIds,
+    customBudget,
     selectedBudgetIds,
-    selectedTravelPartnersIds,
-    selectedActivitiesIds,
-    stepSixMode,
+    adults,
+    childrens,
+    stepFiveMode,
     setCurrentStep,
     handleDaysChange,
     handleNightsChange,
     toggleExperience,
+    setCustomBudget,
     onSelectBudget,
-    onSelectTravelPartners,
-    toggleActivities,
+    handleAdultsChange,
+    handleChildrensChange,
     goCustomPreferences,
     goGenerateItinerary,
     goNext,
@@ -534,8 +478,8 @@ const DiscoverScreen: React.FC = () => {
 
   return (
     <View style={globalStyles.flex1} pointerEvents="box-none">
-      <HeaderDiscover step={currentStep !== 6 ? currentStep + 1 : 6} />
-      {currentStep > 0 && currentStep < 6 && stepSixMode !== 'forms' ? (
+      <HeaderDiscover step={currentStep !== 5 ? currentStep + 1 : 5} />
+      {currentStep > 0 && currentStep < 5 && stepFiveMode !== 'forms' ? (
         <TouchableOpacity style={styles.backContainer} onPress={goPrevious}>
           <View style={styles.backIcon}>
             <MaterialDesignIcons
@@ -584,7 +528,9 @@ const DiscoverScreen: React.FC = () => {
           <ScrollView contentContainerStyle={styles.content}>
             <StepThreeDiscover
               dummyBudget={dummyBudget}
+              customBudget={customBudget}
               selectedBudgetIds={selectedBudgetIds}
+              setCustomBudget={setCustomBudget}
               onSelectBudget={onSelectBudget}
               onContinue={goNext}
             />
@@ -594,15 +540,16 @@ const DiscoverScreen: React.FC = () => {
         <View key="4" style={styles.container}>
           <ScrollView contentContainerStyle={styles.content}>
             <StepFourDiscover
-              dummyTravelPartners={dummyTravelPartners}
-              selectedTravelPartnersIds={selectedTravelPartnersIds}
-              onSelectTravelPartners={onSelectTravelPartners}
+              adults={adults}
+              childrens={childrens}
+              onChangeAdults={handleAdultsChange}
+              onChangeChildrens={handleChildrensChange}
               onContinue={goNext}
             />
           </ScrollView>
         </View>
 
-        <View key="5" style={styles.container}>
+        {/* <View key="5" style={styles.container}>
           <ScrollView contentContainerStyle={styles.content}>
             <StepFiveDiscover
               dummyActivities={dummyActivities}
@@ -612,17 +559,17 @@ const DiscoverScreen: React.FC = () => {
               onContinue={goNext}
             />
           </ScrollView>
-        </View>
+        </View> */}
 
-        <View key="6" style={styles.container}>
+        <View key="5" style={styles.container}>
           <ScrollView contentContainerStyle={styles.content}>
-            {stepSixMode === 'options' ? (
-              <StepSixDiscover
+            {stepFiveMode === 'options' ? (
+              <StepFiveDiscover
                 onAddCustomPreferences={goCustomPreferences}
                 onGenerateItinerary={goGenerateItinerary}
               />
             ) : (
-              <StepSixDiscoverPreference
+              <StepFiveDiscoverPreference
                 onBack={goPrevious}
                 onGenerate={goGenerateItinerary}
               />
@@ -630,7 +577,7 @@ const DiscoverScreen: React.FC = () => {
           </ScrollView>
         </View>
 
-        <View key="7" style={styles.container}>
+        <View key="6" style={styles.container}>
           <ScrollView contentContainerStyle={styles.content}>
             <StepCompleteDiscover
               onViewItinerary={onViewItinerary}

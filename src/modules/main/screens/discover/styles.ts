@@ -33,11 +33,13 @@ export const styles = StyleSheet.create({
   },
   step2ExperienceItem: {
     padding: 18,
+    minHeight: 80,
     gap: 12,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
     borderWidth: 2,
     borderColor: Colors.neutral.secondaryDark,
     borderRadius: 16,

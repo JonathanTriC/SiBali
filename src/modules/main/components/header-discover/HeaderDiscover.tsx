@@ -29,12 +29,12 @@ const HeaderDiscover = ({ step }: HeaderDiscoverProps) => {
       </View>
       <View>
         <Text
-          text="AI Travel Assistant"
+          text="Plan Your Escape"
           type="bold-lg"
           color={Colors.neutral.base}
         />
         <Text
-          text={`Step ${step} of 6`}
+          text={`Step ${step} of 5`}
           type="regular-base"
           color={Colors.neutral.secondary}
         />

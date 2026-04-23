@@ -4,7 +4,7 @@ import MaterialDesignIcons from '@react-native-vector-icons/material-design-icon
 import { Image, View } from 'react-native';
 import { styles } from './styles';
 
-const NearbyPlacesCard = ({ item }: { item: any }) => (
+const NearbyPlacesCard = ({ item }: { item: DestinationItem }) => (
   <View style={styles.container}>
     <Image
       source={{ uri: item.image }}

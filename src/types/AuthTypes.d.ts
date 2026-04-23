@@ -5,7 +5,7 @@ type RegisterResponse = {
 
 type LoginResponse = {
   user?: User;
-  token?: string;
+  accessToken?: string;
 };
 
 type AuthErrorResponse = {

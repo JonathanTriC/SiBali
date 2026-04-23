@@ -52,11 +52,12 @@ const useLogin = () => {
         tags: 'loginAuth',
       });
 
+      console.log('🚀 ~ useLogin ~ data:', data);
       return data?.data;
     },
     onSuccess: data => {
-      console.log('Login successful! Token:', data.token);
-      handleNavigateHome(data?.token ?? '');
+      console.log('Login successful! Token:', data.accessToken);
+      handleNavigateHome(data?.accessToken ?? '');
     },
     onError: data => {
       console.log('Login failed! Error:', data?.message);

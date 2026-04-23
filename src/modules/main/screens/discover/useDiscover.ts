@@ -12,13 +12,11 @@ const useDiscover = () => {
   const [selectedExperienceIds, setSelectedExperienceIds] = useState<number[]>(
     [],
   );
+  const [customBudget, setCustomBudget] = useState<number>(0);
   const [selectedBudgetIds, setSelectedBudgetIds] = useState<number>(0);
-  const [selectedTravelPartnersIds, setSelectedTravelPartnersIds] =
-    useState<number>(0);
-  const [selectedActivitiesIds, setSelectedActivitiesIds] = useState<number[]>(
-    [],
-  );
-  const [stepSixMode, setStepSixMode] = useState<'options' | 'forms'>(
+  const [adults, setAdults] = useState(1);
+  const [childrens, setChildrens] = useState(0);
+  const [stepFiveMode, setStepFiveMode] = useState<'options' | 'forms'>(
     'options',
   );
 
@@ -26,7 +24,6 @@ const useDiscover = () => {
 
   const totalSteps = 6;
   const isMinSelectedExperience = selectedExperienceIds.length >= 1;
-  const isMinSelectedActivities = selectedActivitiesIds.length >= 1;
 
   const dummyExperience = [
     {
@@ -45,70 +42,48 @@ const useDiscover = () => {
       id: 4,
       text: 'Romantic 💑',
     },
+    {
+      id: 5,
+      text: 'Beach & Water 🏖️',
+    },
+    {
+      id: 6,
+      text: 'Temples & Landmarks 🛕',
+    },
+    {
+      id: 7,
+      text: 'Food & Dining 🍜',
+    },
+    {
+      id: 8,
+      text: 'Nature & Hiking 🌿',
+    },
+    {
+      id: 9,
+      text: 'Shopping 🛍️',
+    },
+    {
+      id: 10,
+      text: 'Nightlife 🌙',
+    },
   ];
 
   const dummyBudget = [
     {
       id: 1,
-      text: 'Budget-Friendly 💰',
+      text: '< Rp.500.000',
     },
     {
       id: 2,
-      text: 'Mid-Range 💳',
+      text: 'Rp. 500.000 - Rp. 1.000.000',
     },
     {
       id: 3,
-      text: 'Luxury 💎',
+      text: '>Rp. 1.000.000',
     },
     {
       id: 4,
-      text: 'No Limit 🌟',
-    },
-  ];
-
-  const dummyTravelPartners = [
-    {
-      id: 1,
-      text: 'Solo 🧍',
-    },
-    {
-      id: 2,
-      text: 'Couple 👫',
-    },
-    {
-      id: 3,
-      text: 'Family 👨‍👩‍👧‍👦',
-    },
-    {
-      id: 4,
-      text: 'Friends 👥',
-    },
-  ];
-
-  const dummyActivities = [
-    {
-      id: 1,
-      text: 'Beach & Water 🏖️',
-    },
-    {
-      id: 2,
-      text: 'Temples 🛕',
-    },
-    {
-      id: 3,
-      text: 'Food & Dining 🍜',
-    },
-    {
-      id: 4,
-      text: 'Nature & Hiking 🌿',
-    },
-    {
-      id: 5,
-      text: 'Shopping 🛍️',
-    },
-    {
-      id: 6,
-      text: 'Nightlife 🌙',
+      text: 'Custom',
     },
   ];
 
@@ -157,24 +132,21 @@ const useDiscover = () => {
   };
 
   // MARK: Step Four
-  const onSelectTravelPartners = (id: number) => {
-    setSelectedTravelPartnersIds(id);
+  const handleAdultsChange = (val: number) => {
+    setAdults(val);
+  };
+
+  const handleChildrensChange = (val: number) => {
+    setNights(val);
   };
 
   // MARK: Step Five
-  const toggleActivities = (id: number) => {
-    setSelectedActivitiesIds(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id],
-    );
-  };
-
-  // MARK: Step Six
   const goCustomPreferences = () => {
-    setStepSixMode('forms');
+    setStepFiveMode('forms');
   };
 
   const goGenerateItinerary = () => {
-    pagerRef.current?.setPage(6);
+    pagerRef.current?.setPage(5);
   };
 
   const resetAll = () => {
@@ -187,11 +159,10 @@ const useDiscover = () => {
     // step 3
     setSelectedBudgetIds(0);
     // step 4
-    setSelectedTravelPartnersIds(0);
+    setAdults(1);
+    setChildrens(0);
     // step 5
-    setSelectedActivitiesIds([]);
-    // step 6
-    setStepSixMode('options');
+    setStepFiveMode('options');
 
     // pager reset
     requestAnimationFrame(() => {
@@ -208,8 +179,8 @@ const useDiscover = () => {
   };
 
   const goPrevious = () => {
-    if (stepSixMode === 'forms') {
-      return setStepSixMode('options');
+    if (stepFiveMode === 'forms') {
+      return setStepFiveMode('options');
     }
     if (currentStep > 0) {
       const prevPage = currentStep - 1;
@@ -235,25 +206,24 @@ const useDiscover = () => {
     pagerRef,
     dummyExperience,
     dummyBudget,
-    dummyTravelPartners,
-    dummyActivities,
     days,
     nights,
     isMinSelectedExperience,
-    isMinSelectedActivities,
     currentStep,
     selectedExperienceIds,
+    customBudget,
     selectedBudgetIds,
-    selectedTravelPartnersIds,
-    selectedActivitiesIds,
-    stepSixMode,
+    adults,
+    childrens,
+    stepFiveMode,
     setCurrentStep,
+    setCustomBudget,
     handleDaysChange,
     handleNightsChange,
     toggleExperience,
     onSelectBudget,
-    onSelectTravelPartners,
-    toggleActivities,
+    handleAdultsChange,
+    handleChildrensChange,
     goCustomPreferences,
     goGenerateItinerary,
     goNext,

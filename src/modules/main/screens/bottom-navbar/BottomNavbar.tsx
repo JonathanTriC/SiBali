@@ -37,6 +37,12 @@ const ROUTES: BottomNavbarRoute[] = [
     iconFocused: 'bookmark-check',
   },
   {
+    key: 'MapScreen',
+    title: 'Map',
+    icon: 'map-outline',
+    iconFocused: 'map',
+  },
+  {
     key: 'ProfileScreen',
     title: 'Profile',
     icon: 'account-outline',

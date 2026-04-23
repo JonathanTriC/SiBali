@@ -6,6 +6,7 @@ export const globalStyles = StyleSheet.create({
   },
   flexRowBetween: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   paddingH24: {
@@ -13,6 +14,9 @@ export const globalStyles = StyleSheet.create({
   },
   wfull: {
     width: '100%',
+  },
+  gap4: {
+    gap: 4,
   },
   gap8: {
     gap: 8,
@@ -22,6 +26,9 @@ export const globalStyles = StyleSheet.create({
   },
   gap12: {
     gap: 12,
+  },
+  gap16: {
+    gap: 16,
   },
   gap20: {
     gap: 20,

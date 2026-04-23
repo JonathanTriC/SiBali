@@ -36,10 +36,21 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: Colors.primary.light,
   },
+  countryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   termsConditionContainer: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 40,
+  },
+  separator: {
+    height: 1,
+    width: '100%',
+    backgroundColor: Colors.neutral.secondaryDark,
+    marginVertical: 8,
   },
 });

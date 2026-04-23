@@ -12,8 +12,12 @@ import useHome from './useHome';
 import { RecommendedCard, NearbyPlacesCard } from '@modules/main/components';
 
 const HomeScreen: React.FC = () => {
-  const { dummyPopularCategories, dummyRecommended, navigateScreen } =
-    useHome();
+  const {
+    dummyPopularCategories,
+    dummyRecommended,
+    navigateScreen,
+    onNavigateDetail,
+  } = useHome();
 
   return (
     <View style={globalStyles.flex1}>
@@ -60,7 +64,7 @@ const HomeScreen: React.FC = () => {
                   color={Colors.primary.base}
                 />
                 <Text
-                  text="Ask AI Assistant"
+                  text="Plan Your Escape"
                   type="bold-base"
                   color={Colors.primary.base}
                 />
@@ -128,7 +132,12 @@ const HomeScreen: React.FC = () => {
               data={dummyRecommended}
               keyExtractor={item => item.id.toString()}
               contentContainerStyle={[styles.gap8, globalStyles.paddingH24]}
-              renderItem={({ item }) => <RecommendedCard item={item} />}
+              renderItem={({ item }) => (
+                <RecommendedCard
+                  item={item}
+                  onNavigateDetail={() => onNavigateDetail({ item })}
+                />
+              )}
             />
           </View>
 

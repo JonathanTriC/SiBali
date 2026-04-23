@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import { Colors } from '@constants/colors';
 import MaterialDesignIcons, {
   MaterialDesignIconsIconName,
@@ -101,6 +102,7 @@ const Button = ({
               ? Colors.white
               : color
           }
+          style={{ marginRight: 8 }}
         />
       )}
 

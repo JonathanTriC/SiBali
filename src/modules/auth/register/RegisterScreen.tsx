@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { Button, Text, TextField } from '@components';
+import { FlatList, TouchableOpacity, View } from 'react-native';
+import { BottomModal, Button, Text, TextField } from '@components';
 import { styles } from './styles';
 import { Colors } from '@constants/colors';
 import useRegister from './useRegister';
@@ -9,9 +9,46 @@ import MaterialDesignIcons from '@react-native-vector-icons/material-design-icon
 import { globalStyles } from '@constants/globalStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Controller } from 'react-hook-form';
+import DatePicker from 'react-native-date-picker';
+import { screenHeight } from '@constants';
+import Emoji from 'react-native-emoji';
 
 const RegisterScreen: React.FC = () => {
-  const { control, popScreen, handleSubmit, onSubmit } = useRegister();
+  const {
+    control,
+    userDob,
+    filteredCountries,
+    isShownModalDatePicker,
+    isShownModalNationality,
+    popScreen,
+    setSearchCountryQuery,
+    onSelectCountry,
+    handleSetUserDob,
+    handleShowModalDatePicker,
+    handleShowModalNationality,
+    handleSubmit,
+    // submitRegister,
+    onSubmit,
+  } = useRegister();
+
+  const renderItemCountry = ({ item }: { item: CountriesList }) => {
+    return (
+      <TouchableOpacity onPress={() => onSelectCountry(item)}>
+        <View style={styles.countryItem}>
+          <Emoji
+            name={item?.image ?? ''}
+            style={{ fontSize: 18 }}
+            allowFontScaling={false}
+          />
+          <Text>{item?.name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderSeparator = () => {
+    return <View style={styles.separator} />;
+  };
 
   return (
     <View style={styles.screen}>
@@ -99,6 +136,48 @@ const RegisterScreen: React.FC = () => {
 
             <Controller
               control={control}
+              name={'dob'}
+              render={({
+                field: { value, onChange, onBlur },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  editable={false}
+                  label="Date of Birth"
+                  placeholder="DD MMMM YYYYY"
+                  leftIcon="calendar-outline"
+                  onPress={handleShowModalDatePicker}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  errorMessage={error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name={'nationality'}
+              render={({
+                field: { value, onChange, onBlur },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  editable={false}
+                  label="Nationality"
+                  placeholder="Choose your nationality"
+                  leftIcon="card-account-details-outline"
+                  onPress={handleShowModalNationality}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  errorMessage={error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
               name={'password'}
               render={({
                 field: { value, onChange, onBlur },
@@ -153,6 +232,48 @@ const RegisterScreen: React.FC = () => {
               />
             </Text>
           </View>
+
+          <DatePicker
+            modal
+            mode="date"
+            open={isShownModalDatePicker}
+            date={userDob}
+            onConfirm={handleSetUserDob}
+            onCancel={handleShowModalDatePicker}
+          />
+
+          <BottomModal
+            useKeyboardAvoidingView
+            isVisible={isShownModalNationality}
+            title="Select Your Nationality"
+            style={{ height: screenHeight / 2.5 }}
+            onPressClose={handleShowModalNationality}
+            scrollable={false}
+            useScrollView={false}
+          >
+            <View>
+              <View style={{ marginBottom: 20 }}>
+                <TextField
+                  placeholder={'Search Country'}
+                  onChangeText={text => {
+                    setSearchCountryQuery(text);
+                  }}
+                />
+              </View>
+              <FlatList
+                data={filteredCountries}
+                ListEmptyComponent={<Text text="No Data" />}
+                ItemSeparatorComponent={renderSeparator}
+                renderItem={renderItemCountry}
+                fadingEdgeLength={20}
+                keyExtractor={item => `${item?.code}~${item?.dialCode}`}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={5}
+              />
+            </View>
+          </BottomModal>
         </View>
       </KeyboardAwareScrollView>
     </View>

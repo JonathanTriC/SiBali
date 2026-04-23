@@ -8,7 +8,7 @@ import { ProfileScreen } from '@modules/main/screens/profile';
 import { BottomNavbar } from '@modules/main/screens/bottom-navbar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
-import { DiscoverScreen, ItineraryScreen } from '@modules';
+import { DiscoverScreen, ItineraryScreen, MapScreen } from '@modules';
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 type MainStackProps = {};
@@ -31,6 +31,7 @@ export const MainStack: React.FC<MainStackProps> = () => {
         <Tab.Screen name={'HomeScreen'} component={HomeScreen} />
         <Tab.Screen name={'DiscoverScreen'} component={DiscoverScreen} />
         <Tab.Screen name={'ItineraryScreen'} component={ItineraryScreen} />
+        <Tab.Screen name={'MapScreen'} component={MapScreen} />
         <Tab.Screen name={'ProfileScreen'} component={ProfileScreen} />
       </Tab.Navigator>
     </SafeAreaView>
