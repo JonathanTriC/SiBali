@@ -16,6 +16,8 @@ end
 
 target 'SiBali' do
   config = use_native_modules!
+  
+  pod 'RCT-Folly', :podspec => '../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec'
 
   use_react_native!(
     :path => config[:reactNativePath],

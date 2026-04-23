@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, RegisterScreen } from '@modules/auth';
+import { InterestsScreen, LoginScreen, RegisterScreen } from '@modules/auth';
 import { useNavigator } from '@navigation/navigator/useNavigator';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,6 +21,7 @@ export const AuthStack: React.FC<AuthStackProps> = () => {
       >
         <Stack.Screen name={'LoginScreen'} component={LoginScreen} />
         <Stack.Screen name={'RegisterScreen'} component={RegisterScreen} />
+        <Stack.Screen name={'InterestsScreen'} component={InterestsScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );

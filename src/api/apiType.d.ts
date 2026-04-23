@@ -26,3 +26,9 @@ interface GenerateCurlProps {
   tags: string;
   isError?: string;
 }
+
+type ApiError<T = unknown> = {
+  success: boolean;
+  message: string;
+  errors?: T;
+};
