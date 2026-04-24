@@ -1,13 +1,107 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '@constants/colors';
+import { screenHeight } from '@constants';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  map: {
+    flex: 1,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 24,
   },
-  header: {
-    paddingTop: 48,
-    paddingBottom: 24,
-    gap: 8,
+  closeButton: {
+    position: 'absolute',
+    bottom: screenHeight / 4 + 32,
+    alignSelf: 'center',
+    backgroundColor: Colors.white,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  centerButton: {
+    position: 'absolute',
+    bottom: screenHeight / 4 + 32,
+    right: 20,
+    backgroundColor: Colors.white,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  routeLoadingOverlay: {
+    position: 'absolute',
+    top: 16,
+    alignSelf: 'center',
+    backgroundColor: Colors.white,
+    padding: 8,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  bottomContainer: {
+    height: screenHeight / 4,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    gap: 10,
+  },
+  placesList: {
+    flex: 1,
+  },
+  placeItemWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  placeItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 12,
+  },
+  placeIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    overflow: 'hidden',
+    backgroundColor: Colors.primary.light,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  placeInfo: {
+    flex: 1,
+  },
+  btnSeeDetail: {
+    borderRadius: 50,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
   },
 });
