@@ -120,23 +120,23 @@ const StepTwoDiscover = ({
               >
                 <Text text={item.text} textAlign="center" />
               </View>
-              <View
-                style={[
-                  styles.step2CheckIcon,
-                  {
-                    backgroundColor: isActive
-                      ? Colors.primary.base
-                      : 'transparent',
-                    borderColor: isActive ? Colors.white : 'transparent',
-                  },
-                ]}
-              >
-                <MaterialDesignIcons
-                  name="check"
-                  size={16}
-                  color={Colors.white}
-                />
-              </View>
+              {isActive ? (
+                <View
+                  style={[
+                    styles.step2CheckIcon,
+                    {
+                      backgroundColor: Colors.primary.base,
+                      borderColor: Colors.white,
+                    },
+                  ]}
+                >
+                  <MaterialDesignIcons
+                    name="check"
+                    size={16}
+                    color={Colors.white}
+                  />
+                </View>
+              ) : null}
             </TouchableOpacity>
           );
         }}
@@ -195,7 +195,7 @@ const StepThreeDiscover = ({
           return (
             <TouchableOpacity
               key={item.id}
-              style={{ flex: 1, marginTop: 8 }}
+              style={{ width: '47%', marginTop: 8 }}
               onPress={() => {
                 onSelectBudget(item.id);
                 if (item.id !== 4) {
@@ -211,23 +211,23 @@ const StepThreeDiscover = ({
               >
                 <Text text={item.text} textAlign="center" numberOfLines={2} />
               </View>
-              <View
-                style={[
-                  styles.step2CheckIcon,
-                  {
-                    backgroundColor: isActive
-                      ? Colors.primary.base
-                      : 'transparent',
-                    borderColor: isActive ? Colors.white : 'transparent',
-                  },
-                ]}
-              >
-                <MaterialDesignIcons
-                  name="check"
-                  size={16}
-                  color={Colors.white}
-                />
-              </View>
+              {isActive ? (
+                <View
+                  style={[
+                    styles.step2CheckIcon,
+                    {
+                      backgroundColor: Colors.primary.base,
+                      borderColor: Colors.white,
+                    },
+                  ]}
+                >
+                  <MaterialDesignIcons
+                    name="check"
+                    size={16}
+                    color={Colors.white}
+                  />
+                </View>
+              ) : null}
             </TouchableOpacity>
           );
         }}
@@ -501,7 +501,10 @@ const DiscoverScreen: React.FC = () => {
         }}
       >
         <View key="1" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             <StepOneDiscover
               days={days}
               nights={nights}
@@ -513,7 +516,10 @@ const DiscoverScreen: React.FC = () => {
         </View>
 
         <View key="2" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             <StepTwoDiscover
               dummyExperience={dummyExperience}
               selectedExperienceIds={selectedExperienceIds}
@@ -525,7 +531,10 @@ const DiscoverScreen: React.FC = () => {
         </View>
 
         <View key="3" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             <StepThreeDiscover
               dummyBudget={dummyBudget}
               customBudget={customBudget}
@@ -538,7 +547,10 @@ const DiscoverScreen: React.FC = () => {
         </View>
 
         <View key="4" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             <StepFourDiscover
               adults={adults}
               childrens={childrens}
@@ -549,20 +561,11 @@ const DiscoverScreen: React.FC = () => {
           </ScrollView>
         </View>
 
-        {/* <View key="5" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
-            <StepFiveDiscover
-              dummyActivities={dummyActivities}
-              selectedActivitiesIds={selectedActivitiesIds}
-              isMinSelectedActivities={isMinSelectedActivities}
-              toggleActivities={toggleActivities}
-              onContinue={goNext}
-            />
-          </ScrollView>
-        </View> */}
-
         <View key="5" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             {stepFiveMode === 'options' ? (
               <StepFiveDiscover
                 onAddCustomPreferences={goCustomPreferences}
@@ -578,7 +581,10 @@ const DiscoverScreen: React.FC = () => {
         </View>
 
         <View key="6" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+          >
             <StepCompleteDiscover
               onViewItinerary={onViewItinerary}
               onStartOver={onStartOver}
