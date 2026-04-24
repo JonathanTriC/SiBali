@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   header: {
-    paddingBottom: 24,
     paddingHorizontal: 24,
+    paddingVertical: 16,
     gap: 4,
   },
   listContent: {

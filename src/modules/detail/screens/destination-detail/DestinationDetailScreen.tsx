@@ -1,5 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Button, Text } from '@components';
 import useDestinationDetail from './useDestinationDetail';
 import { styles } from './styles';
@@ -8,10 +14,27 @@ import MaterialDesignIcons from '@react-native-vector-icons/material-design-icon
 import { globalStyles } from '@constants/globalStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { OverviewTab, PhotosTab, ReviewsTab } from '@modules/detail/components';
+import { useRef } from 'react';
+
+const HEADER_SCROLL_THRESHOLD = 80;
 
 const DestinationDetailScreen: React.FC = () => {
   const { data, navigation, TABS, activeTab, setActiveTab } =
     useDestinationDetail();
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const headerBgOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_THRESHOLD],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  const iconBgOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_THRESHOLD],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
 
   const renderContent = () => {
     switch (activeTab) {
@@ -28,24 +51,52 @@ const DestinationDetailScreen: React.FC = () => {
 
   return (
     <View style={globalStyles.flex1}>
-      <ScrollView pointerEvents="box-none" showsVerticalScrollIndicator={false}>
-        <View>
-          <TouchableOpacity
-            style={styles.backContainer}
-            onPress={() => navigation.goBack()}
-          >
-            <MaterialDesignIcons
-              name="arrow-left"
-              size={20}
-              color={Colors.neutral.base}
-            />
-          </TouchableOpacity>
-          <Image
-            source={{ uri: data?.image }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
+      {/* Sticky Header */}
+      <Animated.View
+        style={[styles.stickyHeader, { opacity: headerBgOpacity }]}
+      >
+        <Animated.View
+          style={[
+            StyleSheet.absoluteFillObject,
+            styles.stickyHeaderBg,
+            { opacity: headerBgOpacity },
+          ]}
+        />
+      </Animated.View>
+
+      {/* Sticky Back Button */}
+      <TouchableOpacity
+        style={styles.backContainer}
+        onPress={() => navigation.goBack()}
+      >
+        {/* White pill bg fades out when header bg fades in */}
+        <Animated.View
+          style={[
+            StyleSheet.absoluteFillObject,
+            styles.backIconBg,
+            { opacity: iconBgOpacity },
+          ]}
+        />
+        <MaterialDesignIcons
+          name="arrow-left"
+          size={20}
+          color={Colors.neutral.base}
+        />
+      </TouchableOpacity>
+
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true },
+        )}
+        scrollEventThrottle={16}
+      >
+        <Image
+          source={{ uri: data?.image }}
+          style={styles.image}
+          resizeMode="cover"
+        />
 
         <View style={styles.content}>
           <View style={globalStyles.gap8}>
@@ -57,7 +108,6 @@ const DestinationDetailScreen: React.FC = () => {
                 numberOfLines={2}
                 style={{ width: '80%' }}
               />
-
               <View style={styles.badgeContainer}>
                 <Text
                   text={data?.category}
@@ -121,15 +171,11 @@ const DestinationDetailScreen: React.FC = () => {
           <View style={styles.tabBar}>
             {TABS.map(tab => {
               const isActive = activeTab === tab.key;
-
               return (
-                <View style={globalStyles.flex1}>
+                <View style={globalStyles.flex1} key={tab.key}>
                   <TouchableOpacity
-                    key={tab.key}
                     style={styles.tabItem}
-                    onPress={() => {
-                      setActiveTab(tab.key as any);
-                    }}
+                    onPress={() => setActiveTab(tab.key as any)}
                   >
                     <Text
                       text={tab?.label}
@@ -150,10 +196,9 @@ const DestinationDetailScreen: React.FC = () => {
 
           {renderContent()}
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
 
       <View style={styles.footerBtnContainer}>
-        {/* <Button outline label="Add to Itinerary" style={{ width: '48%' }} /> */}
         <Button
           iconLeft="navigation-variant-outline"
           label="Navigate"

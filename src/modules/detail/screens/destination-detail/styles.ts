@@ -7,6 +7,20 @@ export const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight / 3,
   },
+  stickyHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 56,
+    zIndex: 998,
+    pointerEvents: 'none',
+  },
+  stickyHeaderBg: {
+    backgroundColor: Colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.neutral.secondaryLight2,
+  },
   backContainer: {
     position: 'absolute',
     top: 16,
@@ -15,7 +29,13 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: Colors.white,
     zIndex: 999,
-    elevation: 10,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backIconBg: {
+    backgroundColor: Colors.white,
+    borderRadius: 30,
   },
   content: {
     paddingHorizontal: 24,

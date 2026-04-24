@@ -1,10 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ActivityIndicator,
   TouchableOpacity,
   View,
-  ScrollView,
+  FlatList,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Button, Text } from '@components';
@@ -203,6 +203,17 @@ const MapScreen: React.FC = () => {
     getDistanceKm,
   } = useMap();
 
+  const renderEmptyNearbyDestinations = useMemo(() => {
+    return (
+      <Text
+        text="Nothing nearby within 15 km right now."
+        type="regular-base"
+        color={Colors.neutral.secondary}
+        style={{ textAlign: 'center' }}
+      />
+    );
+  }, []);
+
   return (
     <View style={styles.container}>
       <WebView
@@ -265,11 +276,21 @@ const MapScreen: React.FC = () => {
           type="bold-xl"
           color={Colors.neutral.base}
         />
-        <ScrollView
-          style={styles.placesList}
+
+        <FlatList
+          data={nearbyPlaces}
+          keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
-        >
-          {nearbyPlaces.map(place => {
+          style={styles.placesList}
+          contentContainerStyle={
+            nearbyPlaces.length === 0 && {
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }
+          }
+          ListEmptyComponent={renderEmptyNearbyDestinations}
+          renderItem={({ item: place }) => {
             const distance = location
               ? getDistanceKm(
                   location.latitude,
@@ -278,8 +299,9 @@ const MapScreen: React.FC = () => {
                   place.longitude,
                 )
               : 0;
+
             return (
-              <View key={place.id} style={styles.placeItemWrapper}>
+              <View style={styles.placeItemWrapper}>
                 <TouchableOpacity
                   style={styles.placeItem}
                   onPress={() => {
@@ -295,6 +317,7 @@ const MapScreen: React.FC = () => {
                       color={Colors.neutral.base}
                     />
                   </View>
+
                   <View style={styles.placeInfo}>
                     <Text
                       text={place.name}
@@ -324,8 +347,8 @@ const MapScreen: React.FC = () => {
                 </View>
               </View>
             );
-          })}
-        </ScrollView>
+          }}
+        />
       </View>
     </View>
   );
