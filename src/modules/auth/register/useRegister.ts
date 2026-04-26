@@ -9,6 +9,7 @@ import { Keyboard } from 'react-native';
 import { URL_PATH } from '@constants/url';
 import { COUNTRIES, handlerSetItem, Keys } from '@constants';
 import dayjs from 'dayjs';
+import { isEmpty } from 'lodash';
 
 const formSchema = yup.object().shape({
   name: yup.string().required('Please enter your full name'),
@@ -16,7 +17,7 @@ const formSchema = yup.object().shape({
     .string()
     .email('Please enter a valid email')
     .required('Please enter your email'),
-  dob: yup.string().required('Please enter your dob'),
+  date_of_birth: yup.string().required('Please enter your date of birth'),
   nationality: yup.string().required('Please enter your nationality'),
   password: yup
     .string()
@@ -25,10 +26,10 @@ const formSchema = yup.object().shape({
 });
 
 type FormData = yup.InferType<typeof formSchema>;
-type FormType = 'name' | 'email' | 'password';
+type FormType = 'name' | 'email' | 'date_of_birth' | 'nationality' | 'password';
 
 const useRegister = () => {
-  const { popScreen, resetNavigate, navigateScreen } = useNavigate();
+  const { popScreen, navigateScreen } = useNavigate();
 
   const [userDob, setUserDob] = useState<Date>(new Date());
   const [filteredCountries, setFilteredCountries] =
@@ -44,7 +45,7 @@ const useRegister = () => {
       defaultValues: {
         name: '',
         email: '',
-        dob: '',
+        date_of_birth: '',
         nationality: '',
         password: '',
       },
@@ -53,17 +54,20 @@ const useRegister = () => {
 
   const { mutate: submitRegister } = useMutation<
     RegisterResponse,
-    ApiError<AuthErrorResponse[]>
+    ApiError<AuthErrorResponse>
   >({
     mutationKey: ['register'],
     mutationFn: async () => {
-      const { name, email, password } = getValues();
+      const { name, email, password, date_of_birth, nationality } = getValues();
 
       const body = {
         name: name?.trim(),
         email: email?.trim(),
         password: password?.trim(),
+        date_of_birth: dayjs(date_of_birth).format('YYYY-MM-DD'),
+        nationality: nationality?.trim(),
       };
+      console.log('🚀 ~ useRegister ~ body:', body);
 
       const data = await apiPostWithoutToken({
         url: `${URL_PATH.auth.register}`,
@@ -74,14 +78,16 @@ const useRegister = () => {
       return data?.data;
     },
     onSuccess: data => {
-      console.log('Register successful! Token:', data.token);
-      handleNavigateHome(data.token ?? '');
+      console.log('Register successful! Token:', data?.accessToken);
+      handleNavigateInterests(data);
     },
     onError: data => {
-      console.log('Register failed! Error:', data?.message);
-      setError(data?.errors?.[0]?.field as FormType, {
-        type: 'manual',
-        message: data?.errors?.[0].message,
+      console.log('Register failed! Error:', data?.data?.errors);
+      return data?.data?.errors?.map(item => {
+        return setError(item?.field as FormType, {
+          type: 'manual',
+          message: item.message,
+        });
       });
     },
   });
@@ -109,39 +115,40 @@ const useRegister = () => {
 
   const handleSetUserDob = useCallback(
     (date: Date) => {
-      console.log('🚀 ~ useRegister ~ date:', date);
-      const formattedDate = dayjs(date).format('DD MMMM YYYY');
+      console.log('🚀 ~ useRegister ~ date:', date?.toString());
+      const formattedDate = dayjs(date).format('YYYY-MM-DD');
       setUserDob(date);
-      setValue('dob', formattedDate?.toString());
+      setValue('date_of_birth', formattedDate?.toString());
+      setError('date_of_birth', {
+        type: 'manual',
+        message: '',
+      });
       handleShowModalDatePicker();
     },
-    [handleShowModalDatePicker, setValue],
+    [handleShowModalDatePicker, setValue, setError],
   );
 
-  const handleNavigateInterests = useCallback(() => {
-    navigateScreen('Auth', { screen: 'InterestsScreen' });
-  }, [navigateScreen]);
+  const handleNavigateInterests = useCallback(
+    async (userData: RegisterResponse) => {
+      if (isEmpty(userData)) return;
 
-  const handleNavigateHome = useCallback(
-    async (token: string) => {
-      if (!token) return;
-      console.log({ token });
-      await handlerSetItem(Keys.userToken, token);
+      const { accessToken, refreshToken, user } = userData;
+      if (!accessToken || !refreshToken || !user) return;
 
-      resetNavigate('Main', { screen: 'HomeScreen' });
+      console.log({ accessToken });
+      await handlerSetItem(Keys.accessToken, accessToken);
+      await handlerSetItem(Keys.refreshToken, refreshToken);
+      await handlerSetItem(Keys.userData, JSON.stringify(user));
+
+      navigateScreen('Auth', { screen: 'InterestsScreen' });
     },
-    [resetNavigate],
+    [navigateScreen],
   );
-
-  // const onSubmit = useCallback(() => {
-  //   Keyboard.dismiss();
-  //   submitRegister();
-  // }, [submitRegister]);
 
   const onSubmit = useCallback(() => {
     Keyboard.dismiss();
-    handleNavigateInterests();
-  }, [handleNavigateInterests]);
+    submitRegister();
+  }, [submitRegister]);
 
   useEffect(() => {
     setFilteredCountries(searchCountry(searchCountryQuery));

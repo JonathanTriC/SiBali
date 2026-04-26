@@ -1,6 +1,14 @@
-import { handlerRemoveItem, Keys } from '@constants';
+import {
+  handlerGetAndParseJSON,
+  handlerGetItem,
+  handlerRemoveItem,
+  Keys,
+} from '@constants';
+import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
 import { useCallback, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { apiPost } from '@api';
 
 type MenuSection = {
   title: string;
@@ -20,9 +28,10 @@ const useProfile = () => {
 
   const [isShowAbout, setShowAbout] = useState<boolean>(false);
 
+  const refreshToken = handlerGetItem(Keys.refreshToken);
+  const userData = handlerGetAndParseJSON<User>(Keys.userData);
+
   const dummyUser = {
-    name: 'Travel Explorer',
-    email: 'explorer@email.com',
     visited: 12,
     saved: 24,
     reviews: 8,
@@ -32,10 +41,44 @@ const useProfile = () => {
     setShowAbout(prevState => !prevState);
   }, []);
 
+  const clearAuthData = useCallback(async () => {
+    await handlerRemoveItem(Keys.accessToken);
+    await handlerRemoveItem(Keys.refreshToken);
+    await handlerRemoveItem(Keys.userData);
+  }, []);
+
+  const { mutate: submitLogout, isPending: isLoggingOut } = useMutation<
+    LogoutResponse,
+    ApiError<AuthErrorResponse>
+  >({
+    mutationKey: ['logout'],
+    mutationFn: async () => {
+      const body = {
+        refreshToken: refreshToken,
+      };
+
+      const data = await apiPost<LogoutResponse>({
+        url: URL_PATH.auth.logout,
+        body,
+        tags: 'logout',
+      });
+      return data;
+    },
+    onSuccess: async data => {
+      console.log('Logout successful:', data?.message);
+      await clearAuthData();
+      resetNavigate('Auth', { screen: 'LoginScreen' });
+    },
+    onError: async error => {
+      console.log('Logout failed:', error?.data);
+      await clearAuthData();
+      resetNavigate('Auth', { screen: 'LoginScreen' });
+    },
+  });
+
   const handleLogout = useCallback(() => {
-    handlerRemoveItem(Keys.userToken);
-    resetNavigate('Auth', { screen: 'LoginScreen' });
-  }, [resetNavigate]);
+    submitLogout();
+  }, [submitLogout]);
 
   const menuSections: MenuSection[] = [
     {
@@ -93,9 +136,11 @@ const useProfile = () => {
   ];
 
   return {
-    isShowAbout,
+    userData,
     dummyUser,
     menuSections,
+    isShowAbout,
+    isLoggingOut,
     toggleModalAbout,
     handleLogout,
   };

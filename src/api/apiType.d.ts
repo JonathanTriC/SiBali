@@ -29,6 +29,6 @@ interface GenerateCurlProps {
 
 type ApiError<T = unknown> = {
   success: boolean;
-  message: string;
+  data: T;
   errors?: T;
 };
