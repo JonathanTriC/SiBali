@@ -1,6 +1,6 @@
 import { handlerRemoveItem, Keys } from '@constants';
 import { useNavigate } from '@hooks';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 type MenuSection = {
   title: string;
@@ -18,6 +18,8 @@ type MenuItem = {
 const useProfile = () => {
   const { resetNavigate } = useNavigate();
 
+  const [isShowAbout, setShowAbout] = useState<boolean>(false);
+
   const dummyUser = {
     name: 'Travel Explorer',
     email: 'explorer@email.com',
@@ -25,6 +27,10 @@ const useProfile = () => {
     saved: 24,
     reviews: 8,
   };
+
+  const toggleModalAbout = useCallback(() => {
+    setShowAbout(prevState => !prevState);
+  }, []);
 
   const handleLogout = useCallback(() => {
     handlerRemoveItem(Keys.userToken);
@@ -80,13 +86,19 @@ const useProfile = () => {
           id: 'about',
           icon: 'information-outline',
           label: 'About SIBALI',
-          onPress: () => {},
+          onPress: toggleModalAbout,
         },
       ],
     },
   ];
 
-  return { dummyUser, menuSections, handleLogout };
+  return {
+    isShowAbout,
+    dummyUser,
+    menuSections,
+    toggleModalAbout,
+    handleLogout,
+  };
 };
 
 export default useProfile;
