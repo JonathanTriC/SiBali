@@ -13,6 +13,7 @@ import { RecommendedCard, NearbyPlacesCard } from '@modules/main/components';
 
 const HomeScreen: React.FC = () => {
   const {
+    userData,
     dummyPopularCategories,
     dummyRecommended,
     navigateScreen,
@@ -33,7 +34,7 @@ const HomeScreen: React.FC = () => {
           <View style={styles.gap24}>
             <View style={styles.gap8}>
               <Text
-                text="Hello, Traveler!"
+                text={`Hello, ${userData?.name}!`}
                 type="regular-base"
                 color={Colors.white}
               />

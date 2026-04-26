@@ -1,3 +1,5 @@
 export const Keys = {
-  userToken: 'USER_TOKEN',
+  accessToken: 'ACCESS_TOKEN',
+  refreshToken: 'REFRESH_TOKEN',
+  userData: 'USER_DATA',
 };

@@ -12,6 +12,7 @@ import { Controller } from 'react-hook-form';
 import DatePicker from 'react-native-date-picker';
 import { screenHeight } from '@constants';
 import Emoji from 'react-native-emoji';
+import dayjs from 'dayjs';
 
 const RegisterScreen: React.FC = () => {
   const {
@@ -136,7 +137,7 @@ const RegisterScreen: React.FC = () => {
 
             <Controller
               control={control}
-              name={'dob'}
+              name={'date_of_birth'}
               render={({
                 field: { value, onChange, onBlur },
                 fieldState: { error },
@@ -149,7 +150,7 @@ const RegisterScreen: React.FC = () => {
                   onPress={handleShowModalDatePicker}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  value={value}
+                  value={dayjs(value)?.format('DD MMMM YYYY')}
                   errorMessage={error?.message}
                 />
               )}

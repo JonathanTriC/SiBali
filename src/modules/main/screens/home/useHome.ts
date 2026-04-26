@@ -1,7 +1,18 @@
-import { useNavigate } from '@hooks';
+import { handlerGetAndParseJSON, Keys } from '@constants';
+import { useGeolocation, useNavigate } from '@hooks';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useEffect, useState } from 'react';
 
 const useHome = () => {
   const { navigateScreen } = useNavigate();
+  const [userData, setUserData] = useState<User | null>(null);
+  const { location, getCurrentLocation, getCityFromCoordinates } =
+    useGeolocation();
+
+  const handleGetUserData = async () => {
+    const data = await handlerGetAndParseJSON<User>(Keys.userData);
+    return setUserData(data);
+  };
 
   const dummyPopularCategories = [
     {
@@ -121,7 +132,27 @@ const useHome = () => {
     });
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      getCurrentLocation();
+
+      return () => {};
+    }, [getCurrentLocation]),
+  );
+
+  useEffect(() => {
+    console.log('🚀 ~ useHome ~ location:', location);
+    if (location?.latitude && location?.longitude && !location?.city) {
+      getCityFromCoordinates(location?.latitude, location?.longitude);
+    }
+  }, [location, getCityFromCoordinates]);
+
+  useEffect(() => {
+    handleGetUserData();
+  }, []);
+
   return {
+    userData,
     dummyPopularCategories,
     dummyRecommended,
     navigateScreen,

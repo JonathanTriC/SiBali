@@ -31,7 +31,7 @@ const InterestsScreen: React.FC = () => {
         </TouchableOpacity>
 
         <View style={globalStyles.flex1}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleNavigateHome}>
             <Text
               text="Skip"
               type="bold-lg"

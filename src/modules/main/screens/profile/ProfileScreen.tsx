@@ -11,9 +11,10 @@ import { globalStyles } from '@constants/globalStyles';
 
 const ProfileScreen: React.FC = () => {
   const {
-    isShowAbout,
+    userData,
     dummyUser,
     menuSections,
+    isShowAbout,
     toggleModalAbout,
     handleLogout,
   } = useProfile();
@@ -44,13 +45,13 @@ const ProfileScreen: React.FC = () => {
           </View>
 
           <Text
-            text={dummyUser.name}
+            text={userData?.name}
             type="bold-lg"
             color={Colors.neutral.base}
             style={styles.userName}
           />
           <Text
-            text={dummyUser.email}
+            text={userData?.email}
             type="regular-base"
             color={Colors.neutral.secondary}
           />

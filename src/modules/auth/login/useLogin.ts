@@ -8,6 +8,7 @@ import { apiPostWithoutToken } from '@api';
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 import { handlerSetItem, Keys } from '@constants';
+import { isEmpty } from 'lodash';
 
 const formSchema = yup.object().shape({
   email: yup
@@ -36,7 +37,7 @@ const useLogin = () => {
     mutate: submitLogin,
     status,
     isPending,
-  } = useMutation<LoginResponse, ApiError<AuthErrorResponse[]>>({
+  } = useMutation<LoginResponse, ApiError<AuthErrorResponse>>({
     mutationKey: ['login'],
     mutationFn: async () => {
       const { email, password } = getValues();
@@ -57,22 +58,30 @@ const useLogin = () => {
     },
     onSuccess: data => {
       console.log('Login successful! Token:', data.accessToken);
-      handleNavigateHome(data?.accessToken ?? '');
+      handleNavigateHome(data ?? '');
     },
     onError: data => {
-      console.log('Login failed! Error:', data?.message);
-      setError(data?.errors?.[0]?.field as FormType, {
-        type: 'manual',
-        message: data?.errors?.[0].message,
+      console.log('Login failed! Error:', data?.data?.errors);
+      return data?.data?.errors?.map(item => {
+        return setError(item?.field as FormType, {
+          type: 'manual',
+          message: item.message,
+        });
       });
     },
   });
 
   const handleNavigateHome = useCallback(
-    async (token: string) => {
-      if (!token) return;
-      console.log({ token });
-      await handlerSetItem(Keys.userToken, token);
+    async (userData: LoginResponse) => {
+      if (isEmpty(userData)) return;
+
+      const { accessToken, refreshToken, user } = userData;
+      if (!accessToken || !refreshToken || !user) return;
+
+      console.log({ accessToken });
+      await handlerSetItem(Keys.accessToken, accessToken);
+      await handlerSetItem(Keys.refreshToken, refreshToken);
+      await handlerSetItem(Keys.userData, JSON.stringify(user));
 
       resetNavigate('Main', { screen: 'HomeScreen' });
     },
