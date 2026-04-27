@@ -13,15 +13,23 @@ const RecommendedCard = ({
 }) => (
   <TouchableOpacity onPress={onNavigateDetail}>
     <ImageBackground
-      source={{ uri: item.image }}
+      source={{
+        uri:
+          item.images?.[0] ??
+          'https://placehold.jp/eeeeee/cccccc/160x220.png?text=No%20Image',
+      }}
       style={styles.card}
       imageStyle={styles.image}
       resizeMode="cover"
     >
       <View style={styles.overlay} />
-      <View style={styles.badge}>
-        <Text text={item.category} type="bold-sm" />
-      </View>
+      {item?.categories ? (
+        <View style={styles.badge}>
+          <Text text={item.categories} type="bold-sm" />
+        </View>
+      ) : (
+        <View />
+      )}
       <View style={styles.footer}>
         <Text
           text={item.name}
@@ -36,9 +44,13 @@ const RecommendedCard = ({
               size={14}
               color={Colors.warning.base}
             />
-            <Text text={item.rating} type="bold-sm" color={Colors.white} />
+            <Text
+              text={`${item.rating_avg}`}
+              type="bold-sm"
+              color={Colors.white}
+            />
           </View>
-          <Text text={item.distance} type="bold-sm" color={Colors.white} />
+          {/* <Text text={item.distance} type="bold-sm" color={Colors.white} /> */}
         </View>
       </View>
     </ImageBackground>

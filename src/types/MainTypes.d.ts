@@ -1,18 +1,46 @@
-type DestinationItem = {
-  id?: number;
+type PopularCategoriesResponse = {
+  success?: boolean;
+  message?: string;
+  data?: PopularCategories[];
+};
+
+type PopularCategories = {
+  id?: string;
   name?: string;
-  location?: string;
-  category?: string;
-  rating?: string;
-  reviewsCount?: string;
-  distance?: string;
-  image?: string;
-  aiInsight?: string;
-  about?: string;
-  openHours?: string;
-  phone?: string;
-  website?: string;
+  icon_url?: string;
+  is_active?: string;
+  created_at?: string;
+};
+
+type TrendingDestinationResponse = {
+  success?: boolean;
+  message?: string;
+  data?: DestinationItem[];
+};
+
+type DestinationItem = {
+  id?: string;
+  name?: string;
+  category_id?: null;
+  description?: string;
+  ai_description?: null;
+  about?: null;
+  address?: null;
+  area?: null;
+  latitude?: null;
+  longitude?: null;
+  gmaps_url?: string;
+  phone?: null;
+  website?: null;
+  images?: string[];
   amenities?: string[];
+  rating_avg?: number;
+  rating_count?: number;
+  is_trending?: boolean;
+  is_active?: boolean;
+  created_at?: Date;
+  updated_at?: Date;
+  categories?: string;
 };
 
 type ItineraryPlace = {

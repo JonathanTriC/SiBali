@@ -1,6 +1,9 @@
+import { apiGet } from '@api';
 import { handlerGetAndParseJSON, Keys } from '@constants';
+import { URL_PATH } from '@constants/url';
 import { useGeolocation, useNavigate } from '@hooks';
 import { useFocusEffect } from '@react-navigation/native';
+import { keepPreviousData, useQueries } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 
 const useHome = () => {
@@ -13,34 +16,6 @@ const useHome = () => {
     const data = await handlerGetAndParseJSON<User>(Keys.userData);
     return setUserData(data);
   };
-
-  const dummyPopularCategories = [
-    {
-      id: 1,
-      icon: 'beach',
-      name: 'Beach',
-    },
-    {
-      id: 2,
-      icon: 'temple-buddhist',
-      name: 'Temples',
-    },
-    {
-      id: 3,
-      icon: 'food',
-      name: 'Culinary',
-    },
-    {
-      id: 4,
-      icon: 'shopping',
-      name: 'Shopping',
-    },
-    {
-      id: 5,
-      icon: 'diving-snorkel',
-      name: 'Diving',
-    },
-  ];
 
   const dummyRecommended = [
     {
@@ -125,12 +100,60 @@ const useHome = () => {
     },
   ];
 
+  const [categoriesQueries, trendingQueries] = useQueries({
+    queries: [
+      {
+        queryKey: ['categories'],
+        queryFn: () =>
+          apiGet({
+            url: URL_PATH.master.categories,
+          }).then((res: PopularCategoriesResponse) => res?.data),
+        placeholderData: keepPreviousData,
+        enabled: false,
+        retry: false,
+      },
+      {
+        queryKey: ['trending'],
+        queryFn: () =>
+          apiGet({
+            url: URL_PATH.destinations.trending({ limit: 5 }),
+          }).then((res: TrendingDestinationResponse) => res?.data),
+        placeholderData: keepPreviousData,
+        enabled: false,
+        retry: false,
+      },
+    ],
+  });
+
+  const {
+    data: popularCategories,
+    isLoading: isLoadingPopularCategories,
+    isError: isErrorPopularCategories,
+    refetch: refetchPopularCategories,
+  } = categoriesQueries;
+
+  const {
+    data: trendingDestinations,
+    isLoading: isLoadingTrendingDestinations,
+    isError: isErrorTrendingDestinations,
+    refetch: refetchTrendingDestinations,
+  } = trendingQueries;
+
   const onNavigateDetail = ({ item }: { item: DestinationItem }) => {
     return navigateScreen('Detail', {
       screen: 'DestinationDetailScreen',
       params: { data: item },
     });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetchPopularCategories();
+      refetchTrendingDestinations();
+
+      return () => {};
+    }, [refetchPopularCategories, refetchTrendingDestinations]),
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -152,8 +175,14 @@ const useHome = () => {
   }, []);
 
   return {
+    location,
     userData,
-    dummyPopularCategories,
+    popularCategories,
+    isLoadingPopularCategories,
+    isErrorPopularCategories,
+    trendingDestinations,
+    isLoadingTrendingDestinations,
+    isErrorTrendingDestinations,
     dummyRecommended,
     navigateScreen,
     onNavigateDetail,
