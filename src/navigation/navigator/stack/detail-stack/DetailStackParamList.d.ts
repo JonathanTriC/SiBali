@@ -1,5 +1,5 @@
 interface DestinationDetailScreenProps {
-  data: DestinationItem;
+  destinationId: string;
 }
 
 interface ItineraryDetailScreenProps {

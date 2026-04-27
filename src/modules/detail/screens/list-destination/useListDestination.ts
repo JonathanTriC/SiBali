@@ -17,7 +17,7 @@ const useItineraryDetail = () => {
   const onNavigateDetail = (destination: DestinationItem) => {
     navigateScreen('Detail', {
       screen: 'DestinationDetailScreen',
-      params: { data: destination },
+      params: { destinationId: destination?.id ?? '' },
     });
   };
 

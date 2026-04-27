@@ -142,7 +142,7 @@ const useHome = () => {
   const onNavigateDetail = ({ item }: { item: DestinationItem }) => {
     return navigateScreen('Detail', {
       screen: 'DestinationDetailScreen',
-      params: { data: item },
+      params: { destinationId: item?.id ?? '' },
     });
   };
 
