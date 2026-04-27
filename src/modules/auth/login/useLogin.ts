@@ -19,7 +19,6 @@ const formSchema = yup.object().shape({
 });
 
 type FormData = yup.InferType<typeof formSchema>;
-type FormType = 'email' | 'password';
 
 const useLogin = () => {
   const { navigateScreen, resetNavigate } = useNavigate();
@@ -36,7 +35,7 @@ const useLogin = () => {
   const {
     mutate: submitLogin,
     status,
-    isPending,
+    isPending: isLoadingLogin,
   } = useMutation<LoginResponse, ApiError<AuthErrorResponse>>({
     mutationKey: ['login'],
     mutationFn: async () => {
@@ -61,12 +60,10 @@ const useLogin = () => {
       handleNavigateHome(data ?? '');
     },
     onError: data => {
-      console.log('Login failed! Error:', data?.data?.errors);
-      return data?.data?.errors?.map(item => {
-        return setError(item?.field as FormType, {
-          type: 'manual',
-          message: item.message,
-        });
+      console.log('Login failed! Error:', data?.data?.message);
+      return setError('password', {
+        type: 'manual',
+        message: data?.data?.message,
       });
     },
   });
@@ -100,7 +97,7 @@ const useLogin = () => {
   return {
     control,
     formState,
-    isPending,
+    isLoadingLogin,
     navigateScreen,
     handleSubmit,
     onSubmit,

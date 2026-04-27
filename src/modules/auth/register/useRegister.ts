@@ -52,7 +52,7 @@ const useRegister = () => {
       resolver: yupResolver(formSchema),
     });
 
-  const { mutate: submitRegister } = useMutation<
+  const { mutate: submitRegister, isPending: isLoadingRegister } = useMutation<
     RegisterResponse,
     ApiError<AuthErrorResponse>
   >({
@@ -140,7 +140,12 @@ const useRegister = () => {
       await handlerSetItem(Keys.refreshToken, refreshToken);
       await handlerSetItem(Keys.userData, JSON.stringify(user));
 
-      navigateScreen('Auth', { screen: 'InterestsScreen' });
+      navigateScreen('Auth', {
+        screen: 'InterestsScreen',
+        params: {
+          isFromRegister: true,
+        },
+      });
     },
     [navigateScreen],
   );
@@ -160,6 +165,7 @@ const useRegister = () => {
     filteredCountries,
     isShownModalDatePicker,
     isShownModalNationality,
+    isLoadingRegister,
     popScreen,
     setSearchCountryQuery,
     onSelectCountry,

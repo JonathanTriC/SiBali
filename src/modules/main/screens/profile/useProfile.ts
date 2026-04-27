@@ -7,7 +7,7 @@ import {
 import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
 import { useCallback, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiPost } from '@api';
 
 type MenuSection = {
@@ -24,7 +24,8 @@ type MenuItem = {
 };
 
 const useProfile = () => {
-  const { resetNavigate } = useNavigate();
+  const { resetNavigate, navigateScreen } = useNavigate();
+  const queryClient = useQueryClient();
 
   const [isShowAbout, setShowAbout] = useState<boolean>(false);
 
@@ -67,11 +68,13 @@ const useProfile = () => {
     onSuccess: async data => {
       console.log('Logout successful:', data?.message);
       await clearAuthData();
+      await queryClient.removeQueries();
       resetNavigate('Auth', { screen: 'LoginScreen' });
     },
     onError: async error => {
       console.log('Logout failed:', error?.data);
       await clearAuthData();
+      await queryClient.removeQueries();
       resetNavigate('Auth', { screen: 'LoginScreen' });
     },
   });
@@ -100,7 +103,13 @@ const useProfile = () => {
           id: 'travel-preferences',
           icon: 'map-marker-outline',
           label: 'Travel Preferences',
-          onPress: () => {},
+          onPress: () =>
+            navigateScreen('Auth', {
+              screen: 'InterestsScreen',
+              params: {
+                isFromRegister: false,
+              },
+            }),
         },
       ],
     },
