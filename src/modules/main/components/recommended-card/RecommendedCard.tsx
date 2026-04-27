@@ -24,16 +24,16 @@ const RecommendedCard = ({
       resizeMode="cover"
     >
       <View style={styles.overlay} />
-      {item?.categories ? (
+      {item?.categories?.name ? (
         <View style={styles.badge}>
-          <Text text={item.categories} type="bold-sm" />
+          <Text text={item?.categories?.name ?? ''} type="bold-sm" />
         </View>
       ) : (
         <View />
       )}
       <View style={styles.footer}>
         <Text
-          text={item.name}
+          text={item.name || ''}
           type="bold-base"
           color={Colors.white}
           numberOfLines={2}
@@ -46,7 +46,7 @@ const RecommendedCard = ({
               color={Colors.warning.base}
             />
             <Text
-              text={`${item.rating_avg}`}
+              text={`${item.rating_avg ?? '0.0'}`}
               type="bold-sm"
               color={Colors.white}
             />

@@ -35,11 +35,13 @@ const NearbyPlacesCard = ({
           size={12}
           color={Colors.neutral.secondary}
         />
-        {/* <Text
-          text={item.location}
+        <Text
+          text={item?.address ?? ''}
           type="regular-sm"
           color={Colors.neutral.secondary}
-        /> */}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ marginRight: 20 }}
+        />
       </View>
       <View style={[styles.meta]}>
         <View style={styles.rating}>

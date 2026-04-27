@@ -17,14 +17,14 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
       id: 1,
       icon: 'map-marker-outline',
       label: 'Location',
-      desc: data?.location,
+      desc: data?.area,
     },
-    {
-      id: 2,
-      icon: 'clock-outline',
-      label: 'Hours',
-      desc: data?.openHours,
-    },
+    // {
+    //   id: 2,
+    //   icon: 'clock-outline',
+    //   label: 'Hours',
+    //   desc: data?.openHours,
+    // },
     {
       id: 3,
       icon: 'phone-outline',
@@ -40,14 +40,16 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
   ];
   return (
     <View style={globalStyles?.gap16}>
-      <View style={globalStyles.gap12}>
-        <Text text="About" type="bold-lg" color={Colors.neutral.base} />
-        <Text
-          text={data?.about}
-          type="regular-base"
-          color={Colors.neutral.secondary}
-        />
-      </View>
+      {data?.about ? (
+        <View style={globalStyles.gap12}>
+          <Text text="About" type="bold-lg" color={Colors.neutral.base} />
+          <Text
+            text={data?.about ?? ''}
+            type="regular-base"
+            color={Colors.neutral.secondary}
+          />
+        </View>
+      ) : null}
 
       <FlatList
         scrollEnabled={false}
@@ -55,6 +57,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
         data={aboutData}
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => {
+          if (!item?.desc) return null;
           return (
             <View key={item?.id} style={styles.aboutRow}>
               <MaterialDesignIcons
@@ -63,44 +66,47 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
                 color={Colors.primary.base}
               />
 
-              <View style={globalStyles.gap4}>
+              <View style={[globalStyles.gap4]}>
                 <Text
                   text={item?.label}
                   type="bold-base"
                   color={Colors.neutral.base}
                 />
                 <Text
-                  text={item?.desc}
+                  text={item?.desc ?? ''}
                   type="regular-base"
                   color={Colors.neutral.secondary}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{ marginRight: 24 }}
                 />
               </View>
             </View>
           );
         }}
       />
-
-      <View style={globalStyles.gap12}>
-        <Text text="Amenities" type="bold-lg" color={Colors.neutral.base} />
-        <FlatList
-          scrollEnabled={false}
-          contentContainerStyle={globalStyles.gap12}
-          data={data?.amenities}
-          numColumns={3}
-          keyExtractor={index => `${index}`}
-          renderItem={({ item, index }) => {
-            return (
-              <View key={`${index + 1}`} style={styles.amenitiesChip}>
-                <Text
-                  text={item}
-                  type="regular-base"
-                  color={Colors.neutral.base}
-                />
-              </View>
-            );
-          }}
-        />
-      </View>
+      {data?.amenities ? (
+        <View style={globalStyles.gap12}>
+          <Text text="Amenities" type="bold-lg" color={Colors.neutral.base} />
+          <FlatList
+            scrollEnabled={false}
+            contentContainerStyle={globalStyles.gap12}
+            data={data?.amenities}
+            numColumns={3}
+            keyExtractor={index => `${index}`}
+            renderItem={({ item, index }) => {
+              return (
+                <View key={`${index + 1}`} style={styles.amenitiesChip}>
+                  <Text
+                    text={item}
+                    type="regular-base"
+                    color={Colors.neutral.base}
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };

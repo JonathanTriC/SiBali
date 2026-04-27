@@ -20,6 +20,9 @@ export const URL_PATH = {
   },
   // MARK: DESTINATIONS
   destinations: {
+    detail: ({ destinationId }: { destinationId: string }) => {
+      return `${API_PREFIX}/${DESTINATIONS_PREFIX}/${destinationId}`;
+    },
     list: ({
       limit,
       offset,

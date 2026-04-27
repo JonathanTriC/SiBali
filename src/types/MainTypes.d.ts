@@ -18,6 +18,12 @@ type TrendingDestinationResponse = {
   data?: DestinationItem[];
 };
 
+type DestinationDetailResponse = {
+  success?: boolean;
+  message?: string;
+  data?: DestinationItem;
+};
+
 type DestinationItem = {
   id?: string;
   name?: string;
@@ -40,7 +46,13 @@ type DestinationItem = {
   is_active?: boolean;
   created_at?: Date;
   updated_at?: Date;
-  categories?: string;
+  categories?: CategoriesItem;
+};
+
+type CategoriesItem = {
+  id?: string;
+  name?: string;
+  icon_url?: string;
 };
 
 type ItineraryPlace = {
