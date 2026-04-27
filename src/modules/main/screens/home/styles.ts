@@ -36,6 +36,14 @@ export const styles = StyleSheet.create({
     borderColor: Colors.neutral.secondaryDark,
     backgroundColor: Colors.neutral.secondaryLight,
   },
+  loadingContainer: {
+    alignItems: 'center',
+  },
+  loadingRowContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    marginHorizontal: 24,
+  },
   gap8: {
     gap: 8,
   },

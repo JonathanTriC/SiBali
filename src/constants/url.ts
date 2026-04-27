@@ -1,6 +1,8 @@
-export const BASE_URL = 'https://si-bali.vercel.app/';
+import { BASE_URL as BASE_URL_ENV } from '@env';
+export const BASE_URL = BASE_URL_ENV;
 export const API_PREFIX = 'api';
 export const AUTH_PREFIX = 'auth';
+export const DESTINATIONS_PREFIX = 'destinations';
 
 export const URL_PATH = {
   // MARK: AUTH
@@ -10,5 +12,23 @@ export const URL_PATH = {
     me: `${API_PREFIX}/${AUTH_PREFIX}/me`,
     refreshToken: `${API_PREFIX}/${AUTH_PREFIX}/refresh-token`,
     logout: `${API_PREFIX}/${AUTH_PREFIX}/logout`,
+  },
+  // MARK: DESTINATIONS
+  destinations: {
+    trending: ({ limit }: { limit?: number }) => {
+      const params = new URLSearchParams();
+
+      if (limit) params.append('limit', String(limit));
+
+      const queryString = params.toString();
+
+      return `${API_PREFIX}/${DESTINATIONS_PREFIX}/trending${
+        queryString ? `?${queryString}` : ''
+      }`;
+    },
+  },
+  // MARK: MASTER
+  master: {
+    categories: `${API_PREFIX}/categories`,
   },
 };
