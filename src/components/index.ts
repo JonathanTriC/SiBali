@@ -5,3 +5,4 @@ export * from './counter-input';
 export * from './bottom-modal';
 export * from './picker-country';
 export * from './skeleton-loading';
+export * from './loading-modal';

@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { Button, Text, TextField } from '@components';
+import { Button, LoadingModal, Text, TextField } from '@components';
 import { Logo } from '@assets/images';
 import { Controller } from 'react-hook-form';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,7 +15,7 @@ const LoginScreen: React.FC = () => {
   const {
     control,
     formState,
-    // isPending,
+    isLoadingLogin,
     navigateScreen,
     handleSubmit,
     onSubmit,
@@ -153,6 +153,8 @@ const LoginScreen: React.FC = () => {
           </View>
         </View>
       </KeyboardAwareScrollView>
+
+      <LoadingModal isVisible={isLoadingLogin} />
     </View>
   );
 };

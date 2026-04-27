@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { BottomModal, Text } from '@components';
+import { BottomModal, LoadingModal, Text } from '@components';
 import { Colors } from '@constants/colors';
 import MaterialDesignIcons, {
   MaterialDesignIconsIconName,
@@ -15,6 +15,7 @@ const ProfileScreen: React.FC = () => {
     dummyUser,
     menuSections,
     isShowAbout,
+    isLoggingOut,
     toggleModalAbout,
     handleLogout,
   } = useProfile();
@@ -273,6 +274,8 @@ const ProfileScreen: React.FC = () => {
           />
         </View>
       </BottomModal>
+
+      <LoadingModal isVisible={isLoggingOut} />
     </View>
   );
 };

@@ -1,8 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Button, Text } from '@components';
+import { Button, LoadingModal, Text } from '@components';
 import { Colors } from '@constants/colors';
 import { globalStyles } from '@constants/globalStyles';
-import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
+import MaterialDesignIcons, {
+  MaterialDesignIconsIconName,
+} from '@react-native-vector-icons/material-design-icons';
 import React from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
@@ -10,11 +12,16 @@ import useInterests from './useInterests';
 
 const InterestsScreen: React.FC = () => {
   const {
-    listInterests,
+    isFromRegister,
+    interestsList,
+    isLoadingInterestsList,
+    isLoadingSubmitUserInterests,
+    isLoadingUserInterest,
     selectedIds,
     isMinSelected,
     toggleInterest,
     popScreen,
+    handleSubmitInterests,
     handleNavigateHome,
   } = useInterests();
 
@@ -31,14 +38,16 @@ const InterestsScreen: React.FC = () => {
         </TouchableOpacity>
 
         <View style={globalStyles.flex1}>
-          <TouchableOpacity onPress={handleNavigateHome}>
-            <Text
-              text="Skip"
-              type="bold-lg"
-              textAlign="right"
-              color={Colors.primary.base}
-            />
-          </TouchableOpacity>
+          {isFromRegister ? (
+            <TouchableOpacity onPress={handleNavigateHome}>
+              <Text
+                text="Skip"
+                type="bold-lg"
+                textAlign="right"
+                color={Colors.primary.base}
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
 
@@ -59,19 +68,20 @@ const InterestsScreen: React.FC = () => {
 
         {/* List */}
         <FlatList
-          data={listInterests}
+          data={interestsList}
           numColumns={2}
           keyExtractor={(item, index) => `${item.id}-${index}`}
           style={globalStyles.flex1}
           contentContainerStyle={[globalStyles.gap12, { paddingBottom: 120 }]}
           columnWrapperStyle={globalStyles.gap12}
           renderItem={({ item }) => {
-            const isActive = selectedIds.includes(item.id);
+            if (!item?.id) return null;
+            const isActive = selectedIds.includes(item?.id);
             return (
               <TouchableOpacity
-                key={item.id}
+                key={item?.id}
                 style={{ width: '47%', marginTop: 8 }}
-                onPress={() => toggleInterest(item.id)}
+                onPress={() => toggleInterest(item?.id ?? '')}
               >
                 <View
                   style={[
@@ -79,22 +89,24 @@ const InterestsScreen: React.FC = () => {
                     isActive ? styles.activeInterestItem : {},
                   ]}
                 >
-                  <View
-                    style={[
-                      styles.interestItemIcon,
-                      isActive ? styles.activeInterestItemIcon : {},
-                    ]}
-                  >
-                    <MaterialDesignIcons
-                      name={item.icon as any}
-                      color={
-                        isActive
-                          ? Colors.primary.base
-                          : Colors.neutral.secondary
-                      }
-                      size={20}
-                    />
-                  </View>
+                  {item?.icon_url ? (
+                    <View
+                      style={[
+                        styles.interestItemIcon,
+                        isActive ? styles.activeInterestItemIcon : {},
+                      ]}
+                    >
+                      <MaterialDesignIcons
+                        name={item.icon_url as MaterialDesignIconsIconName}
+                        color={
+                          isActive
+                            ? Colors.primary.base
+                            : Colors.neutral.secondary
+                        }
+                        size={20}
+                      />
+                    </View>
+                  ) : null}
                   <Text text={item.name} />
                 </View>
                 <View
@@ -123,11 +135,15 @@ const InterestsScreen: React.FC = () => {
         <View style={styles.footerBtn}>
           <Button
             isDisabled={!isMinSelected}
-            label="Continue"
-            action={handleNavigateHome}
+            label={isFromRegister ? 'Continue' : 'Save'}
+            action={handleSubmitInterests}
           />
         </View>
       </View>
+
+      <LoadingModal isVisible={isLoadingUserInterest} />
+      <LoadingModal isVisible={isLoadingInterestsList} />
+      <LoadingModal isVisible={isLoadingSubmitUserInterests} />
     </View>
   );
 };

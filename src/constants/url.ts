@@ -2,6 +2,7 @@ import { BASE_URL as BASE_URL_ENV } from '@env';
 export const BASE_URL = BASE_URL_ENV;
 export const API_PREFIX = 'api';
 export const AUTH_PREFIX = 'auth';
+export const USERS_PREFIX = 'users/me';
 export const DESTINATIONS_PREFIX = 'destinations';
 
 export const URL_PATH = {
@@ -12,6 +13,10 @@ export const URL_PATH = {
     me: `${API_PREFIX}/${AUTH_PREFIX}/me`,
     refreshToken: `${API_PREFIX}/${AUTH_PREFIX}/refresh-token`,
     logout: `${API_PREFIX}/${AUTH_PREFIX}/logout`,
+  },
+  // MARK: USERS
+  users: {
+    interests: `${API_PREFIX}/${USERS_PREFIX}/interests`,
   },
   // MARK: DESTINATIONS
   destinations: {
@@ -29,6 +34,7 @@ export const URL_PATH = {
   },
   // MARK: MASTER
   master: {
+    interests: `${API_PREFIX}/interests`,
     categories: `${API_PREFIX}/categories`,
   },
 };

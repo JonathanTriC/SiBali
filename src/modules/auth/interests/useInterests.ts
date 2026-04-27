@@ -1,8 +1,14 @@
+import { apiGet, apiPost } from '@api';
+import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
-import { useCallback, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 
 const useInterests = () => {
-  const { popScreen, resetNavigate } = useNavigate();
+  const { popScreen, resetNavigate, getRouteParams } = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { isFromRegister } = getRouteParams<InterestParamsList>();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const isMinSelected = selectedIds.length >= 3;
@@ -13,31 +19,99 @@ const useInterests = () => {
     );
   };
 
-  const listInterests = [
-    { id: '1', icon: 'surfing', name: 'Surfing' },
-    { id: '2', icon: 'temple-buddhist', name: 'Temples' },
-    { id: '3', icon: 'yoga', name: 'Yoga &\nWellness' },
-    { id: '4', icon: 'music', name: 'Nightlife' },
-    { id: '5', icon: 'food', name: 'Foodie Spots' },
-    { id: '6', icon: 'hiking', name: 'Hiking' },
-    { id: '7', icon: 'beach', name: 'Beach' },
-    { id: '8', icon: 'diving-snorkel', name: 'Diving' },
-    { id: '9', icon: 'shopping', name: 'Shopping' },
-    { id: '10', icon: 'star', name: 'Equestrian' },
-    { id: '11', icon: 'ferry', name: 'Jet Skiing' },
-    { id: '12', icon: 'fish', name: 'Fishing' },
-  ];
+  const {
+    data: interestsList,
+    isLoading: isLoadingInterestsList,
+    isError: isErrorInterestsList,
+  } = useQuery({
+    queryKey: ['interests'],
+    queryFn: () =>
+      apiGet({
+        url: URL_PATH.master.interests,
+      }).then((res: InterestsListResponse) => res?.data),
+  });
+
+  const {
+    data: userInterestsData,
+    isPending: isLoadingUserInterest,
+    // isError: isErrorUserInterests,
+  } = useQuery({
+    queryKey: ['user-interests'],
+    queryFn: () =>
+      apiGet({
+        url: URL_PATH.users.interests,
+      }).then((res: UserInterestsResponse) => {
+        setSelectedIds((res?.data ?? [])?.map(data => data?.interest_id ?? ''));
+        return res?.data;
+      }),
+    enabled: !isFromRegister,
+    retry: false,
+  });
+
+  const {
+    mutate: submitUserInterests,
+    isPending: isLoadingSubmitUserInterests,
+  } = useMutation<UserInterestsItem[], ApiError<UsersErrorResponse>>({
+    mutationKey: ['set-interests'],
+    mutationFn: async () => {
+      const body = {
+        interestIds: selectedIds,
+      };
+
+      const data = await apiPost<SetInterestsResponse>({
+        url: URL_PATH.users.interests,
+        body,
+      });
+
+      return data?.data ?? [];
+    },
+    onSuccess: data => {
+      console.log('Successfuly Set User Interests:', data);
+      if (isFromRegister) {
+        handleNavigateHome();
+      } else {
+        popScreen();
+      }
+    },
+  });
+
+  const handleSubmitInterests = useCallback(() => {
+    console.log(selectedIds);
+    submitUserInterests();
+  }, [selectedIds, submitUserInterests]);
 
   const handleNavigateHome = useCallback(() => {
     resetNavigate('Main', { screen: 'HomeScreen' });
   }, [resetNavigate]);
 
+  useEffect(() => {
+    console.log('🚀 ~ useInterests ~ userInterestsData:', userInterestsData);
+    if (userInterestsData) {
+      setSelectedIds(userInterestsData.map(data => data?.interest_id ?? ''));
+    }
+  }, [userInterestsData]);
+
+  useEffect(() => {
+    return () => {
+      setSelectedIds([]);
+      queryClient.resetQueries({
+        queryKey: ['user-interests'],
+      });
+    };
+  }, [queryClient]);
+
   return {
-    listInterests,
+    isFromRegister,
+    interestsList,
+    isLoadingInterestsList,
+    isLoadingUserInterest,
+    isLoadingSubmitUserInterests,
+    isErrorInterestsList,
     selectedIds,
     isMinSelected,
     toggleInterest,
     popScreen,
+    handleSubmitInterests,
     handleNavigateHome,
   };
 };

@@ -1,7 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { BottomModal, Button, Text, TextField } from '@components';
+import {
+  BottomModal,
+  Button,
+  LoadingModal,
+  Text,
+  TextField,
+} from '@components';
 import { styles } from './styles';
 import { Colors } from '@constants/colors';
 import useRegister from './useRegister';
@@ -21,6 +27,7 @@ const RegisterScreen: React.FC = () => {
     filteredCountries,
     isShownModalDatePicker,
     isShownModalNationality,
+    isLoadingRegister,
     popScreen,
     setSearchCountryQuery,
     onSelectCountry,
@@ -150,7 +157,7 @@ const RegisterScreen: React.FC = () => {
                   onPress={handleShowModalDatePicker}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  value={dayjs(value)?.format('DD MMMM YYYY')}
+                  value={value ? dayjs(value)?.format('DD MMMM YYYY') : ''}
                   errorMessage={error?.message}
                 />
               )}
@@ -277,6 +284,8 @@ const RegisterScreen: React.FC = () => {
           </BottomModal>
         </View>
       </KeyboardAwareScrollView>
+
+      <LoadingModal isVisible={isLoadingRegister} />
     </View>
   );
 };
