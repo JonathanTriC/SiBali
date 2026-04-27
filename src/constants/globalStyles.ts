@@ -9,8 +9,14 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  padding24: {
+    padding: 24,
+  },
   paddingH24: {
     paddingHorizontal: 24,
+  },
+  paddingV24: {
+    paddingVertical: 24,
   },
   wfull: {
     width: '100%',

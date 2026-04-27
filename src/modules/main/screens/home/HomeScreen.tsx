@@ -24,6 +24,8 @@ const HomeScreen: React.FC = () => {
     isErrorTrendingDestinations,
     // dummyRecommended,
     navigateScreen,
+    onNavigateDestinationByCategories,
+    onNavigateAllTrending,
     onNavigateDetail,
   } = useHome();
 
@@ -57,7 +59,11 @@ const HomeScreen: React.FC = () => {
                 keyExtractor={item => item?.id ?? ''}
                 contentContainerStyle={[styles.gap8, globalStyles.paddingH24]}
                 renderItem={({ item }) => (
-                  <View key={item?.id ?? ''} style={styles.popularCategoryItem}>
+                  <TouchableOpacity
+                    key={item?.id ?? ''}
+                    style={styles.popularCategoryItem}
+                    onPress={() => onNavigateDestinationByCategories({ item })}
+                  >
                     {item?.icon_url ? (
                       <MaterialDesignIcons
                         name={item.icon_url as MaterialDesignIconsIconName}
@@ -70,7 +76,7 @@ const HomeScreen: React.FC = () => {
                       type="bold-base"
                       color={Colors.neutral.base}
                     />
-                  </View>
+                  </TouchableOpacity>
                 )}
               />
             </View>
@@ -78,7 +84,11 @@ const HomeScreen: React.FC = () => {
         </View>
       );
     },
-    [isLoadingPopularCategories, popularCategories],
+    [
+      isLoadingPopularCategories,
+      popularCategories,
+      onNavigateDestinationByCategories,
+    ],
   );
 
   const renderRecommended = useCallback(
@@ -109,7 +119,7 @@ const HomeScreen: React.FC = () => {
                   color={Colors.neutral.base}
                 />
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={onNavigateAllTrending}>
                   <Text
                     text="See All"
                     type="regular-sm"
@@ -136,7 +146,12 @@ const HomeScreen: React.FC = () => {
         </View>
       );
     },
-    [isLoadingTrendingDestinations, trendingDestinations, onNavigateDetail],
+    [
+      isLoadingTrendingDestinations,
+      trendingDestinations,
+      onNavigateAllTrending,
+      onNavigateDetail,
+    ],
   );
 
   return (
