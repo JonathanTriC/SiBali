@@ -1,13 +1,24 @@
 import { Text } from '@components';
 import { Colors } from '@constants/colors';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
-import { Image, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
+import { URL_PATH } from '@constants/url';
 
-const NearbyPlacesCard = ({ item }: { item: DestinationItem }) => (
-  <View style={styles.container}>
+const NearbyPlacesCard = ({
+  item,
+  onNavigateDetail,
+}: {
+  item: DestinationItem;
+  onNavigateDetail: () => void;
+}) => (
+  <TouchableOpacity style={styles.container} onPress={onNavigateDetail}>
     <Image
-      source={{ uri: item.image }}
+      source={{
+        uri:
+          item.images?.[0] ??
+          URL_PATH.images.noImages({ height: 96, width: 96 }),
+      }}
       style={styles.image}
       resizeMode="cover"
     />
@@ -24,11 +35,11 @@ const NearbyPlacesCard = ({ item }: { item: DestinationItem }) => (
           size={12}
           color={Colors.neutral.secondary}
         />
-        <Text
+        {/* <Text
           text={item.location}
           type="regular-sm"
           color={Colors.neutral.secondary}
-        />
+        /> */}
       </View>
       <View style={[styles.meta]}>
         <View style={styles.rating}>
@@ -38,19 +49,19 @@ const NearbyPlacesCard = ({ item }: { item: DestinationItem }) => (
             color={Colors.warning.base}
           />
           <Text
-            text={item.rating}
+            text={`${item.rating_avg}`}
             type="regular-sm"
             color={Colors.neutral.base}
           />
         </View>
-        <Text
+        {/* <Text
           text={item.distance}
           type="regular-sm"
           color={Colors.neutral.secondary}
-        />
+        /> */}
       </View>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 export { NearbyPlacesCard };

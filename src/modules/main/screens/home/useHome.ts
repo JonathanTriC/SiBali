@@ -146,6 +146,28 @@ const useHome = () => {
     });
   };
 
+  const onNavigateDestinationByCategories = ({
+    item,
+  }: {
+    item: PopularCategories;
+  }) => {
+    return navigateScreen('Detail', {
+      screen: 'ListDestinationScreen',
+      params: {
+        title: `${item?.name} Destinations`,
+        type: 'categories',
+        categoryId: item?.id,
+      },
+    });
+  };
+
+  const onNavigateAllTrending = () => {
+    return navigateScreen('Detail', {
+      screen: 'ListDestinationScreen',
+      params: { title: 'Recommended for You', type: 'trending' },
+    });
+  };
+
   useFocusEffect(
     useCallback(() => {
       refetchPopularCategories();
@@ -185,6 +207,8 @@ const useHome = () => {
     isErrorTrendingDestinations,
     dummyRecommended,
     navigateScreen,
+    onNavigateDestinationByCategories,
+    onNavigateAllTrending,
     onNavigateDetail,
   };
 };

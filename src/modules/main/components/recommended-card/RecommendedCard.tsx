@@ -3,6 +3,7 @@ import { Colors } from '@constants/colors';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import { ImageBackground, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
+import { URL_PATH } from '@constants/url';
 
 const RecommendedCard = ({
   item,
@@ -16,7 +17,7 @@ const RecommendedCard = ({
       source={{
         uri:
           item.images?.[0] ??
-          'https://placehold.jp/eeeeee/cccccc/160x220.png?text=No%20Image',
+          URL_PATH.images.noImages({ height: 160, width: 220 }),
       }}
       style={styles.card}
       imageStyle={styles.image}

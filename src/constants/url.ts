@@ -20,6 +20,27 @@ export const URL_PATH = {
   },
   // MARK: DESTINATIONS
   destinations: {
+    list: ({
+      limit,
+      offset,
+      categoryId,
+    }: {
+      limit?: number;
+      offset?: number;
+      categoryId?: string;
+    }) => {
+      const params = new URLSearchParams();
+
+      if (limit) params.append('limit', String(limit));
+      if (offset) params.append('offset', String(offset));
+      if (categoryId) params.append('categoryId', String(categoryId));
+
+      const queryString = params.toString();
+
+      return `${API_PREFIX}/${DESTINATIONS_PREFIX}${
+        queryString ? `?${queryString}` : ''
+      }`;
+    },
     trending: ({ limit }: { limit?: number }) => {
       const params = new URLSearchParams();
 
@@ -36,5 +57,11 @@ export const URL_PATH = {
   master: {
     interests: `${API_PREFIX}/interests`,
     categories: `${API_PREFIX}/categories`,
+  },
+  // MARK: NO IMAGES
+  images: {
+    noImages: ({ height, width }: { height?: number; width?: number }) => {
+      return `https://placehold.jp/eeeeee/cccccc/${height}x${width}.png?text=No%20Image`;
+    },
   },
 };
