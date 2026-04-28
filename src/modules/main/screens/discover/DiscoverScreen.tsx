@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Button, CounterInput, Text, TextField } from '@components';
 import { styles } from './styles';
 import { HeaderDiscover } from '@modules/main/components';
@@ -69,16 +75,16 @@ const StepOneDiscover = ({
 };
 
 const StepTwoDiscover = ({
-  dummyExperience,
+  interestList,
   selectedExperienceIds,
   isMinSelectedExperience,
   toggleExperience,
   onContinue,
 }: {
-  dummyExperience: { id: number; text: string }[];
-  selectedExperienceIds: number[];
+  interestList: InterestsItem[];
+  selectedExperienceIds: string[];
   isMinSelectedExperience: boolean;
-  toggleExperience: (id: number) => void;
+  toggleExperience: (id: string) => void;
   onContinue: () => void;
 }) => {
   return (
@@ -97,7 +103,7 @@ const StepTwoDiscover = ({
       />
 
       <FlatList
-        data={dummyExperience}
+        data={interestList}
         numColumns={2}
         scrollEnabled={false}
         keyExtractor={(item, index) => `${item.id}-${index}`}
@@ -105,12 +111,12 @@ const StepTwoDiscover = ({
         contentContainerStyle={[globalStyles.gap12]}
         columnWrapperStyle={globalStyles.gap12}
         renderItem={({ item }) => {
-          const isActive = selectedExperienceIds.includes(item.id);
+          const isActive = selectedExperienceIds.includes(item?.id ?? '');
           return (
             <TouchableOpacity
               key={item.id}
               style={{ width: '47%', marginTop: 8 }}
-              onPress={() => toggleExperience(item.id)}
+              onPress={() => toggleExperience(item?.id ?? '')}
             >
               <View
                 style={[
@@ -118,7 +124,7 @@ const StepTwoDiscover = ({
                   isActive ? styles.step2ActiveExperienceItem : {},
                 ]}
               >
-                <Text text={item.text} textAlign="center" />
+                <Text text={item?.name ?? ''} textAlign="center" />
               </View>
               {isActive ? (
                 <View
@@ -152,14 +158,14 @@ const StepTwoDiscover = ({
 };
 
 const StepThreeDiscover = ({
-  dummyBudget,
+  budgetList,
   customBudget,
   selectedBudgetIds,
   setCustomBudget,
   onSelectBudget,
   onContinue,
 }: {
-  dummyBudget: { id: number; text: string }[];
+  budgetList: { id: number; text: string }[];
   customBudget: number;
   selectedBudgetIds: number;
   setCustomBudget: React.Dispatch<React.SetStateAction<number>>;
@@ -183,7 +189,7 @@ const StepThreeDiscover = ({
       />
 
       <FlatList
-        data={dummyBudget}
+        data={budgetList}
         numColumns={2}
         scrollEnabled={false}
         keyExtractor={(item, index) => `${item.id}-${index}`}
@@ -356,9 +362,13 @@ const StepFiveDiscover = ({
 };
 
 const StepFiveDiscoverPreference = ({
+  customPreferences,
+  setCustomPreferences,
   onBack,
   onGenerate,
 }: {
+  customPreferences: string;
+  setCustomPreferences: React.Dispatch<React.SetStateAction<string>>;
   onBack: () => void;
   onGenerate: () => void;
 }) => {
@@ -374,7 +384,8 @@ const StepFiveDiscoverPreference = ({
       <TextField
         multiline
         placeholder="E.g., I want to visit Ubud, prefer vegetarian food, need wheelchair accessible places..."
-        onChangeText={() => {}}
+        value={customPreferences}
+        onChangeText={text => setCustomPreferences(text)}
         inputTextStyle={{ height: 150 }}
       />
 
@@ -399,48 +410,67 @@ const StepFiveDiscoverPreference = ({
 };
 
 const StepCompleteDiscover = ({
+  isLoadingSubmitGenerateItinerary,
   onViewItinerary,
   onStartOver,
 }: {
+  isLoadingSubmitGenerateItinerary: boolean;
   onViewItinerary: () => void;
   onStartOver: () => void;
 }) => {
   return (
-    <View style={[globalStyles.gap24, globalStyles.wfull]}>
-      <View style={{ alignItems: 'center' }}>
-        <View style={styles.checkBadgeContainer}>
-          <LinearGradient
-            colors={['#005B8C', '#083344']}
-            start={{ x: 0.85, y: 0.85 }}
-            end={{ x: 0.15, y: 0.15 }}
-            style={styles.checkBadge}
+    <View>
+      {isLoadingSubmitGenerateItinerary ? (
+        <View style={[globalStyles.gap24, globalStyles.wfull]}>
+          <ActivityIndicator size="large" color={Colors.primary.base} />
+          <Text
+            text="Please wait, your itinerary is being generated..."
+            type="bold-base"
+            color={Colors.primary.base}
           />
-          <View>
-            <MaterialDesignIcons name="check" size={40} color={Colors.white} />
-          </View>
         </View>
-      </View>
+      ) : (
+        <View style={[globalStyles.gap24, globalStyles.wfull]}>
+          <View style={{ alignItems: 'center' }}>
+            <View style={styles.checkBadgeContainer}>
+              <LinearGradient
+                colors={['#005B8C', '#083344']}
+                start={{ x: 0.85, y: 0.85 }}
+                end={{ x: 0.15, y: 0.15 }}
+                style={styles.checkBadge}
+              />
+              <View>
+                <MaterialDesignIcons
+                  name="check"
+                  size={40}
+                  color={Colors.white}
+                />
+              </View>
+            </View>
+          </View>
 
-      <Text
-        text={'Your Itinerary is Ready!'}
-        type="bold-xl"
-        color={Colors.neutral.base}
-        textAlign="center"
-      />
-      <Text
-        text="We've created a personalized 3 days, 2 nights itinerary based on your preferences."
-        type="regular-lg"
-        color={Colors.neutral.secondary}
-        textAlign="center"
-      />
+          <Text
+            text={'Your Itinerary is Ready!'}
+            type="bold-xl"
+            color={Colors.neutral.base}
+            textAlign="center"
+          />
+          <Text
+            text="We've created a personalized 3 days, 2 nights itinerary based on your preferences."
+            type="regular-lg"
+            color={Colors.neutral.secondary}
+            textAlign="center"
+          />
 
-      <Button label="View My Itinerary 📅" action={onViewItinerary} />
-      <Button
-        label="Start Over"
-        background={Colors.white}
-        color={Colors.primary.base}
-        action={onStartOver}
-      />
+          <Button label="View My Itinerary 📅" action={onViewItinerary} />
+          <Button
+            label="Start Over"
+            background={Colors.white}
+            color={Colors.primary.base}
+            action={onStartOver}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -448,8 +478,8 @@ const StepCompleteDiscover = ({
 const DiscoverScreen: React.FC = () => {
   const {
     pagerRef,
-    dummyExperience,
-    dummyBudget,
+    interestsList,
+    budgetList,
     days,
     nights,
     isMinSelectedExperience,
@@ -460,7 +490,10 @@ const DiscoverScreen: React.FC = () => {
     adults,
     childrens,
     stepFiveMode,
+    customPreferences,
+    isLoadingSubmitGenerateItinerary,
     setCurrentStep,
+    setCustomPreferences,
     handleDaysChange,
     handleNightsChange,
     toggleExperience,
@@ -524,7 +557,7 @@ const DiscoverScreen: React.FC = () => {
             contentContainerStyle={styles.content}
           >
             <StepTwoDiscover
-              dummyExperience={dummyExperience}
+              interestList={interestsList ?? []}
               selectedExperienceIds={selectedExperienceIds}
               isMinSelectedExperience={isMinSelectedExperience}
               toggleExperience={toggleExperience}
@@ -540,7 +573,7 @@ const DiscoverScreen: React.FC = () => {
             contentContainerStyle={styles.content}
           >
             <StepThreeDiscover
-              dummyBudget={dummyBudget}
+              budgetList={budgetList}
               customBudget={customBudget}
               selectedBudgetIds={selectedBudgetIds}
               setCustomBudget={setCustomBudget}
@@ -579,6 +612,8 @@ const DiscoverScreen: React.FC = () => {
               />
             ) : (
               <StepFiveDiscoverPreference
+                customPreferences={customPreferences}
+                setCustomPreferences={setCustomPreferences}
                 onBack={goPrevious}
                 onGenerate={goGenerateItinerary}
               />
@@ -593,6 +628,9 @@ const DiscoverScreen: React.FC = () => {
             contentContainerStyle={styles.content}
           >
             <StepCompleteDiscover
+              isLoadingSubmitGenerateItinerary={
+                isLoadingSubmitGenerateItinerary
+              }
               onViewItinerary={onViewItinerary}
               onStartOver={onStartOver}
             />

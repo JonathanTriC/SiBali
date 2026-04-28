@@ -1,5 +1,8 @@
+import { apiGet, apiPost } from '@api';
+import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
 import { useFocusEffect } from '@react-navigation/native';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useRef, useState } from 'react';
 import PagerView from 'react-native-pager-view';
 
@@ -9,7 +12,7 @@ const useDiscover = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [days, setDays] = useState(3);
   const [nights, setNights] = useState(2);
-  const [selectedExperienceIds, setSelectedExperienceIds] = useState<number[]>(
+  const [selectedExperienceIds, setSelectedExperienceIds] = useState<string[]>(
     [],
   );
   const [customBudget, setCustomBudget] = useState<number>(0);
@@ -19,73 +22,77 @@ const useDiscover = () => {
   const [stepFiveMode, setStepFiveMode] = useState<'options' | 'forms'>(
     'options',
   );
+  const [customPreferences, setCustomPreferences] = useState<string>('');
 
   const pagerRef = useRef<PagerView>(null);
 
   const totalSteps = 6;
   const isMinSelectedExperience = selectedExperienceIds.length >= 1;
 
-  const dummyExperience = [
-    {
-      id: 1,
-      text: 'Relaxing 🧘',
-    },
-    {
-      id: 2,
-      text: 'Adventure 🏄',
-    },
-    {
-      id: 3,
-      text: 'Cultural 🏛️',
-    },
-    {
-      id: 4,
-      text: 'Romantic 💑',
-    },
-    {
-      id: 5,
-      text: 'Beach & Water 🏖️',
-    },
-    {
-      id: 6,
-      text: 'Temples & Landmarks 🛕',
-    },
-    {
-      id: 7,
-      text: 'Food & Dining 🍜',
-    },
-    {
-      id: 8,
-      text: 'Nature & Hiking 🌿',
-    },
-    {
-      id: 9,
-      text: 'Shopping 🛍️',
-    },
-    {
-      id: 10,
-      text: 'Nightlife 🌙',
-    },
+  const budgetList = [
+    { id: 1, text: '< Rp.500.000', range: '<500000' },
+    { id: 2, text: 'Rp. 500.000 - Rp. 1.000.000', range: '500000-1000000' },
+    { id: 3, text: '>Rp. 1.000.000', range: '>1000000' },
+    { id: 4, text: 'Custom', range: 'custom' },
   ];
 
-  const dummyBudget = [
-    {
-      id: 1,
-      text: '< Rp.500.000',
+  const { data: interestsList } = useQuery({
+    queryKey: ['interests'],
+    queryFn: () =>
+      apiGet({
+        url: URL_PATH.master.interests,
+      }).then((res: InterestsListResponse) => res?.data),
+  });
+
+  const {
+    mutate: submitGenerateItinerary,
+    isPending: isLoadingSubmitGenerateItinerary,
+  } = useMutation<GenerateItinerary, ApiError<DiscoveryErrorResponse>>({
+    mutationKey: ['generate-itinerary'],
+    mutationFn: async () => {
+      const body = {
+        durationDays: days,
+        durationNights: nights,
+        interests: getSelectedInterests(),
+        budgetRange: getBudgetRange(),
+        adults,
+        children: childrens,
+        area: '',
+        specialRequests: '',
+        customPreferences: stepFiveMode === 'forms' ? customPreferences : '',
+      };
+
+      const data = await apiPost<GenerateItineraryResponse>({
+        url: URL_PATH.discovery.generateItinerary,
+        body,
+      });
+
+      return data?.data ?? {};
     },
-    {
-      id: 2,
-      text: 'Rp. 500.000 - Rp. 1.000.000',
+    onSuccess: data => {
+      console.log('Successfuly Generate Itinerary:', data);
     },
-    {
-      id: 3,
-      text: '>Rp. 1.000.000',
-    },
-    {
-      id: 4,
-      text: 'Custom',
-    },
-  ];
+  });
+
+  // MARK: Helpers
+  const getSelectedInterests = () => {
+    if (!Array.isArray(interestsList) || interestsList.length === 0) return [];
+
+    return interestsList
+      .filter(
+        e =>
+          e !== null &&
+          e !== undefined &&
+          selectedExperienceIds.includes(e?.id ?? ''),
+      )
+      .map(e => (e?.name ?? '').trim())
+      .filter(name => name.length > 0);
+  };
+
+  const getBudgetRange = () => {
+    if (selectedBudgetIds === 4) return String(customBudget);
+    return budgetList.find(b => b.id === selectedBudgetIds)?.range ?? '';
+  };
 
   // MARK: Step One
   const syncNightsWithDays = (
@@ -95,23 +102,17 @@ const useDiscover = () => {
   ) => {
     const max = inputDays - 1;
     const min = Math.min(prevNights, max);
-
     if (nextNights > max) return max;
     if (nextNights < min) return min;
-
     return nextNights;
   };
 
   const handleDaysChange = (val: number) => {
     setDays(val);
-
     setNights(prev => {
       const max = val - 1;
-
       if (prev > max) return max;
-
       return Math.max(prev, max);
-      // return prev;
     });
   };
 
@@ -120,7 +121,7 @@ const useDiscover = () => {
   };
 
   // MARK: Step Two
-  const toggleExperience = (id: number) => {
+  const toggleExperience = (id: string) => {
     setSelectedExperienceIds(prev =>
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id],
     );
@@ -132,39 +133,33 @@ const useDiscover = () => {
   };
 
   // MARK: Step Four
-  const handleAdultsChange = (val: number) => {
-    setAdults(val);
-  };
-
-  const handleChildrensChange = (val: number) => {
-    setChildrens(val);
-  };
+  const handleAdultsChange = (val: number) => setAdults(val);
+  const handleChildrensChange = (val: number) => setChildrens(val);
 
   // MARK: Step Five
-  const goCustomPreferences = () => {
-    setStepFiveMode('forms');
-  };
+  const goCustomPreferences = () => setStepFiveMode('forms');
 
   const goGenerateItinerary = () => {
+    handleGenerateItinerary();
     pagerRef.current?.setPage(5);
   };
 
+  // MARK: Generate
+  const handleGenerateItinerary = useCallback(() => {
+    submitGenerateItinerary();
+  }, [submitGenerateItinerary]);
+
+  // MARK: Navigation
   const resetAll = () => {
     setCurrentStep(0);
-    // step 1
     setDays(3);
     setNights(2);
-    // step 2
     setSelectedExperienceIds([]);
-    // step 3
     setSelectedBudgetIds(0);
-    // step 4
     setAdults(1);
     setChildrens(0);
-    // step 5
     setStepFiveMode('options');
-
-    // pager reset
+    setCustomPreferences('');
     requestAnimationFrame(() => {
       pagerRef.current?.setPage(0);
     });
@@ -172,24 +167,17 @@ const useDiscover = () => {
 
   const goNext = () => {
     if (currentStep < totalSteps - 1) {
-      const nextPage = currentStep + 1;
-
       requestAnimationFrame(() => {
-        pagerRef.current?.setPage(nextPage);
+        pagerRef.current?.setPage(currentStep + 1);
       });
     }
   };
 
   const goPrevious = () => {
-    if (stepFiveMode === 'forms') {
-      return setStepFiveMode('options');
-    }
-
+    if (stepFiveMode === 'forms') return setStepFiveMode('options');
     if (currentStep > 0) {
-      const prevPage = currentStep - 1;
-
       requestAnimationFrame(() => {
-        pagerRef.current?.setPage(prevPage);
+        pagerRef.current?.setPage(currentStep - 1);
       });
     }
   };
@@ -198,19 +186,18 @@ const useDiscover = () => {
     navigateScreen('Main', { screen: 'ItineraryScreen' });
   };
 
-  const onStartOver = () => {
-    resetAll();
-  };
+  const onStartOver = () => resetAll();
 
   useFocusEffect(
     useCallback(() => {
       resetAll();
     }, []),
   );
+
   return {
     pagerRef,
-    dummyExperience,
-    dummyBudget,
+    interestsList,
+    budgetList,
     days,
     nights,
     isMinSelectedExperience,
@@ -221,8 +208,11 @@ const useDiscover = () => {
     adults,
     childrens,
     stepFiveMode,
+    customPreferences,
+    isLoadingSubmitGenerateItinerary,
     setCurrentStep,
     setCustomBudget,
+    setCustomPreferences,
     handleDaysChange,
     handleNightsChange,
     toggleExperience,
