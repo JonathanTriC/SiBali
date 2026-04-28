@@ -477,7 +477,7 @@ const DiscoverScreen: React.FC = () => {
   } = useDiscover();
 
   return (
-    <View style={globalStyles.flex1} pointerEvents="box-none">
+    <View style={globalStyles.flex1}>
       <HeaderDiscover step={currentStep !== 5 ? currentStep + 1 : 5} />
       {currentStep > 0 && currentStep < 5 && stepFiveMode !== 'forms' ? (
         <TouchableOpacity style={styles.backContainer} onPress={goPrevious}>
@@ -495,6 +495,7 @@ const DiscoverScreen: React.FC = () => {
         ref={pagerRef}
         style={globalStyles.flex1}
         initialPage={0}
+        offscreenPageLimit={6}
         scrollEnabled={false}
         onPageSelected={e => {
           setCurrentStep(e.nativeEvent.position);
@@ -502,8 +503,9 @@ const DiscoverScreen: React.FC = () => {
       >
         <View key="1" style={styles.container}>
           <ScrollView
-            contentContainerStyle={styles.content}
+            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.content}
           >
             <StepOneDiscover
               days={days}
@@ -517,8 +519,9 @@ const DiscoverScreen: React.FC = () => {
 
         <View key="2" style={styles.container}>
           <ScrollView
-            contentContainerStyle={styles.content}
+            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.content}
           >
             <StepTwoDiscover
               dummyExperience={dummyExperience}
@@ -532,8 +535,9 @@ const DiscoverScreen: React.FC = () => {
 
         <View key="3" style={styles.container}>
           <ScrollView
-            contentContainerStyle={styles.content}
+            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.content}
           >
             <StepThreeDiscover
               dummyBudget={dummyBudget}
@@ -548,8 +552,9 @@ const DiscoverScreen: React.FC = () => {
 
         <View key="4" style={styles.container}>
           <ScrollView
-            contentContainerStyle={styles.content}
+            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.content}
           >
             <StepFourDiscover
               adults={adults}
@@ -563,8 +568,9 @@ const DiscoverScreen: React.FC = () => {
 
         <View key="5" style={styles.container}>
           <ScrollView
-            contentContainerStyle={styles.content}
+            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.content}
           >
             {stepFiveMode === 'options' ? (
               <StepFiveDiscover
@@ -582,8 +588,9 @@ const DiscoverScreen: React.FC = () => {
 
         <View key="6" style={styles.container}>
           <ScrollView
-            contentContainerStyle={styles.content}
+            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.content}
           >
             <StepCompleteDiscover
               onViewItinerary={onViewItinerary}

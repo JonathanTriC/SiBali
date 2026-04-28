@@ -137,7 +137,7 @@ const useDiscover = () => {
   };
 
   const handleChildrensChange = (val: number) => {
-    setNights(val);
+    setChildrens(val);
   };
 
   // MARK: Step Five
@@ -173,8 +173,10 @@ const useDiscover = () => {
   const goNext = () => {
     if (currentStep < totalSteps - 1) {
       const nextPage = currentStep + 1;
-      pagerRef.current?.setPage(nextPage);
-      setCurrentStep(nextPage);
+
+      requestAnimationFrame(() => {
+        pagerRef.current?.setPage(nextPage);
+      });
     }
   };
 
@@ -182,10 +184,13 @@ const useDiscover = () => {
     if (stepFiveMode === 'forms') {
       return setStepFiveMode('options');
     }
+
     if (currentStep > 0) {
       const prevPage = currentStep - 1;
-      pagerRef.current?.setPage(prevPage);
-      return setCurrentStep(prevPage);
+
+      requestAnimationFrame(() => {
+        pagerRef.current?.setPage(prevPage);
+      });
     }
   };
 

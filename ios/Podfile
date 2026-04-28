@@ -1,3 +1,5 @@
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -17,7 +19,7 @@ end
 target 'SiBali' do
   config = use_native_modules!
   
-  pod 'RCT-Folly', :podspec => '../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec'
+  # pod 'RCT-Folly', :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],

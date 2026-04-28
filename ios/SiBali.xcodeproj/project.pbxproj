@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		0CC31D07AAC0774D89232C21 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		72715BC2B7E08797026F63C1 /* libPods-SiBali.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB46AC825E17BB5FD0E7E0CC /* libPods-SiBali.a */; };
 		75C622492C354E30A5D93675 /* Mulish-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19D4F55259C148EBBC9DAA38 /* Mulish-Bold.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		881E0251635844D29AF62D75 /* Mulish-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013818E6E838465AB3E72B37 /* Mulish-Light.ttf */; };
 		88C4E75C2F9B227100734479 /* Bali.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 88C4E75B2F9B227000734479 /* Bali.gpx */; };
+		927D860022EED46B915EFF3B /* libPods-SiBali.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB676F24589F120FCE33D74 /* libPods-SiBali.a */; };
 		F48E7F7B1CD64B26A03C3B89 /* Mulish-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6869D057FFE4A2AB2AD2A18 /* Mulish-Regular.ttf */; };
 /* End PBXBuildFile section */
 
@@ -25,14 +25,14 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SiBali/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = SiBali/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19D4F55259C148EBBC9DAA38 /* Mulish-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-Bold.ttf"; path = "../src/assets/fonts/Mulish-Bold.ttf"; sourceTree = "<group>"; };
-		417213E3D002A49734AD0762 /* Pods-SiBali.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiBali.debug.xcconfig"; path = "Target Support Files/Pods-SiBali/Pods-SiBali.debug.xcconfig"; sourceTree = "<group>"; };
+		6ED31F78A8D8F8E69DAD7717 /* Pods-SiBali.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiBali.release.xcconfig"; path = "Target Support Files/Pods-SiBali/Pods-SiBali.release.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = SiBali/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SiBali/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88C4E75B2F9B227000734479 /* Bali.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Bali.gpx; sourceTree = "<group>"; };
+		C34BEAE80E77F5C6CC499C8F /* Pods-SiBali.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiBali.debug.xcconfig"; path = "Target Support Files/Pods-SiBali/Pods-SiBali.debug.xcconfig"; sourceTree = "<group>"; };
 		D6869D057FFE4A2AB2AD2A18 /* Mulish-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-Regular.ttf"; path = "../src/assets/fonts/Mulish-Regular.ttf"; sourceTree = "<group>"; };
-		DB46AC825E17BB5FD0E7E0CC /* libPods-SiBali.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SiBali.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBB676F24589F120FCE33D74 /* libPods-SiBali.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SiBali.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F934E7B23C30B5805BAFE5DC /* Pods-SiBali.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiBali.release.xcconfig"; path = "Target Support Files/Pods-SiBali/Pods-SiBali.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72715BC2B7E08797026F63C1 /* libPods-SiBali.a in Frameworks */,
+				927D860022EED46B915EFF3B /* libPods-SiBali.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				DB46AC825E17BB5FD0E7E0CC /* libPods-SiBali.a */,
+				DBB676F24589F120FCE33D74 /* libPods-SiBali.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -112,8 +112,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				417213E3D002A49734AD0762 /* Pods-SiBali.debug.xcconfig */,
-				F934E7B23C30B5805BAFE5DC /* Pods-SiBali.release.xcconfig */,
+				C34BEAE80E77F5C6CC499C8F /* Pods-SiBali.debug.xcconfig */,
+				6ED31F78A8D8F8E69DAD7717 /* Pods-SiBali.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -125,13 +125,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SiBali" */;
 			buildPhases = (
-				EB7D4869699FCF3E614CFA2B /* [CP] Check Pods Manifest.lock */,
+				0A17FE21F6A1D26FCD178F31 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				FCA99FA946F8502FCED9C796 /* [CP] Embed Pods Frameworks */,
-				F2038342717C840680F48547 /* [CP] Copy Pods Resources */,
+				0B659704787B7C56123BC2DA /* [CP] Embed Pods Frameworks */,
+				7C67F5D88B9235BFEB972780 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -207,7 +207,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"\\\"$WITH_ENVIRONMENT\\\" \\\"$REACT_NATIVE_XCODE\\\"\"\n";
 		};
-		EB7D4869699FCF3E614CFA2B /* [CP] Check Pods Manifest.lock */ = {
+		0A17FE21F6A1D26FCD178F31 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -229,24 +229,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F2038342717C840680F48547 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FCA99FA946F8502FCED9C796 /* [CP] Embed Pods Frameworks */ = {
+		0B659704787B7C56123BC2DA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -261,6 +244,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C67F5D88B9235BFEB972780 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SiBali/Pods-SiBali-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -279,7 +279,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 417213E3D002A49734AD0762 /* Pods-SiBali.debug.xcconfig */;
+			baseConfigurationReference = C34BEAE80E77F5C6CC499C8F /* Pods-SiBali.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -309,7 +309,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F934E7B23C30B5805BAFE5DC /* Pods-SiBali.release.xcconfig */;
+			baseConfigurationReference = 6ED31F78A8D8F8E69DAD7717 /* Pods-SiBali.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
