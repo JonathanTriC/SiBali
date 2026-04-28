@@ -28,6 +28,7 @@ const DestinationDetailScreen: React.FC = () => {
     destinationDetail,
     isLoadingDestinationDetail,
     setActiveTab,
+    handleOpenNavigate,
   } = useDestinationDetail();
 
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -279,6 +280,7 @@ const DestinationDetailScreen: React.FC = () => {
           iconLeft="navigation-variant-outline"
           label="Navigate"
           style={{ width: '100%' }}
+          action={handleOpenNavigate}
         />
       </View>
     </View>
