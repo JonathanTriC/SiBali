@@ -4,6 +4,7 @@ export const API_PREFIX = 'api';
 export const AUTH_PREFIX = 'auth';
 export const USERS_PREFIX = 'users/me';
 export const DESTINATIONS_PREFIX = 'destinations';
+export const DISCOVERY_PREFIX = 'discovery';
 
 export const URL_PATH = {
   // MARK: AUTH
@@ -55,6 +56,10 @@ export const URL_PATH = {
         queryString ? `?${queryString}` : ''
       }`;
     },
+  },
+  // MARK: DISCOVERY
+  discovery: {
+    generateItinerary: `${API_PREFIX}/${DISCOVERY_PREFIX}/generate-itinerary`,
   },
   // MARK: MASTER
   master: {
