@@ -3,7 +3,7 @@ interface DestinationDetailScreenProps {
 }
 
 interface ItineraryDetailScreenProps {
-  data: ItineraryItem;
+  itineraryId: string;
 }
 interface ListDestinationScreenProps {
   type: 'categories' | 'trending';

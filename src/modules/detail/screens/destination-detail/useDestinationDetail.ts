@@ -1,17 +1,12 @@
 import { apiGet } from '@api';
 import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 import { Linking, Platform } from 'react-native';
 
 const useDestinationDetail = () => {
   const { getRouteParams, navigation } = useNavigate();
-  const queryClient = useQueryClient();
   const { destinationId } = getRouteParams<DestinationDetailScreenProps>();
 
   const [activeTab, setActiveTab] = useState<'overview' | 'reviews' | 'photos'>(
@@ -26,7 +21,7 @@ const useDestinationDetail = () => {
 
   const { data: destinationDetail, isLoading: isLoadingDestinationDetail } =
     useQuery({
-      queryKey: ['destination-detail'],
+      queryKey: [`destination-detail-${destinationId}`],
       queryFn: () =>
         apiGet({
           url: URL_PATH.destinations.detail({ destinationId }),
@@ -58,6 +53,7 @@ const useDestinationDetail = () => {
 
     try {
       const canOpen = await Linking.canOpenURL(url);
+      console.log('🚀 ~ openMap ~ url:', url);
       if (canOpen) {
         await Linking.openURL(url);
       } else {
@@ -92,14 +88,6 @@ const useDestinationDetail = () => {
     destinationDetail?.latitude,
     destinationDetail?.longitude,
   ]);
-
-  useEffect(() => {
-    return () => {
-      queryClient.resetQueries({
-        queryKey: ['destination-detail'],
-      });
-    };
-  }, [queryClient]);
 
   return {
     navigation,

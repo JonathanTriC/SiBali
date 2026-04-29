@@ -1,12 +1,55 @@
-import React from 'react';
-import { FlatList, ImageBackground, View } from 'react-native';
-import { Button, Text } from '@components';
+import React, { useCallback } from 'react';
+import { FlatList, ImageBackground, RefreshControl, View } from 'react-native';
+import { Button, SkeletonLoading, Text } from '@components';
 import { Colors } from '@constants/colors';
 import { styles } from './styles';
 import useItinerary from './useItinerary';
+import { URL_PATH } from '@constants/url';
+import { formatRupiah, screenWidth } from '@constants';
+import { globalStyles } from '@constants/globalStyles';
 
 const ItineraryScreen: React.FC = () => {
-  const { dummyItineraryList, onNavigateDetail } = useItinerary();
+  const {
+    listItinerariesData,
+    isLoadingListItineraries,
+    isRefreshing,
+    onRefresh,
+    onNavigateDetail,
+  } = useItinerary();
+
+  const renderEmptyComponent = useCallback(() => {
+    if (isLoadingListItineraries) {
+      return (
+        <View style={globalStyles.gap12}>
+          {Array.from({ length: 3 }, (_, index) => (
+            <SkeletonLoading
+              key={index}
+              height={350}
+              width={screenWidth - 42}
+              borderRadius={16}
+            />
+          ))}
+        </View>
+      );
+    }
+
+    return (
+      <View style={globalStyles.padding24}>
+        <Text
+          text="No itineraries yet"
+          type="bold-lg"
+          color={Colors.neutral.base}
+          textAlign="center"
+        />
+        <Text
+          text="Start planning your first trip and it will appear here."
+          type="regular-base"
+          color={Colors.neutral.secondary}
+          textAlign="center"
+        />
+      </View>
+    );
+  }, [isLoadingListItineraries]);
 
   return (
     <View style={styles.container}>
@@ -16,30 +59,58 @@ const ItineraryScreen: React.FC = () => {
           type="bold-xl"
           color={Colors.neutral.base}
         />
-        <Text
-          text={`${dummyItineraryList.length} generated itineraries`}
-          type="regular-base"
-          color={Colors.neutral.secondary}
-        />
+        {listItinerariesData ? (
+          <Text
+            text={`${listItinerariesData?.length} generated itineraries`}
+            type="regular-base"
+            color={Colors.neutral.secondary}
+          />
+        ) : null}
       </View>
 
       <FlatList
-        data={dummyItineraryList}
-        keyExtractor={item => item.id.toString()}
+        data={listItinerariesData}
+        keyExtractor={item => item?.id ?? ''}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
+        ListEmptyComponent={renderEmptyComponent}
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            colors={[Colors.primary.base]}
+            tintColor={Colors.primary.base}
+          />
+        }
         renderItem={({ item }) => (
           <View style={styles.card}>
             {/* Card Image */}
             <ImageBackground
-              source={{ uri: item.image }}
+              source={{
+                uri:
+                  item?.cover_image ??
+                  URL_PATH.images.noImages({
+                    height: 180,
+                    width: screenWidth - 48,
+                  }),
+              }}
               style={styles.cardImage}
               resizeMode="cover"
             >
               <View style={styles.imageOverlay} />
               <View style={styles.imageTextContainer}>
-                <Text text={item.title} type="bold-lg" color={Colors.white} />
-                <Text text={item.date} type="regular-sm" color={Colors.white} />
+                <Text
+                  text={item?.title ?? ''}
+                  type="bold-lg"
+                  color={Colors.white}
+                />
+                <Text
+                  text={item?.start_date ?? ''}
+                  type="regular-sm"
+                  color={Colors.white}
+                />
               </View>
             </ImageBackground>
 
@@ -53,7 +124,7 @@ const ItineraryScreen: React.FC = () => {
                     color={Colors.neutral.secondary}
                   />
                   <Text
-                    text={item.duration}
+                    text={`${item?.duration_days} Days, ${item?.duration_nights} Nights`}
                     type="bold-sm"
                     color={Colors.neutral.base}
                     textAlign="center"
@@ -69,7 +140,7 @@ const ItineraryScreen: React.FC = () => {
                     color={Colors.neutral.secondary}
                   />
                   <Text
-                    text={item.budget}
+                    text={formatRupiah(item?.budget_range ?? '')}
                     type="bold-sm"
                     color={Colors.neutral.base}
                     textAlign="center"
@@ -85,7 +156,7 @@ const ItineraryScreen: React.FC = () => {
                     color={Colors.neutral.secondary}
                   />
                   <Text
-                    text={item.placesCount.toString()}
+                    text={`${item?.total_destinations}`}
                     type="bold-sm"
                     color={Colors.neutral.base}
                     textAlign="center"
@@ -99,7 +170,7 @@ const ItineraryScreen: React.FC = () => {
               <Button
                 label="View Details"
                 icon="chevron-right"
-                action={() => onNavigateDetail(item)}
+                action={() => onNavigateDetail(item?.id ?? '')}
               />
             </View>
           </View>

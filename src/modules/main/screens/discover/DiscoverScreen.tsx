@@ -16,6 +16,7 @@ import PagerView from 'react-native-pager-view';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import useDiscover from './useDiscover';
 import LinearGradient from 'react-native-linear-gradient';
+import { formatRupiah } from '@constants';
 
 const StepOneDiscover = ({
   days,
@@ -161,14 +162,14 @@ const StepThreeDiscover = ({
   budgetList,
   customBudget,
   selectedBudgetIds,
-  setCustomBudget,
+  handleChangeCustomBudget,
   onSelectBudget,
   onContinue,
 }: {
-  budgetList: { id: number; text: string }[];
+  budgetList: { id: number; text: string; range: string }[];
   customBudget: number;
   selectedBudgetIds: number;
-  setCustomBudget: React.Dispatch<React.SetStateAction<number>>;
+  handleChangeCustomBudget: (text: string) => void;
   onSelectBudget: (id: number) => void;
   onContinue: () => void;
 }) => {
@@ -193,7 +194,7 @@ const StepThreeDiscover = ({
         numColumns={2}
         scrollEnabled={false}
         keyExtractor={(item, index) => `${item.id}-${index}`}
-        style={globalStyles.flex1}
+        // style={globalStyles.flex1}
         contentContainerStyle={[globalStyles.gap12]}
         columnWrapperStyle={globalStyles.gap12}
         renderItem={({ item }) => {
@@ -243,9 +244,9 @@ const StepThreeDiscover = ({
         <View style={globalStyles.gap12}>
           <TextField
             label="Enter your daily budget (Rp)"
-            value={customBudget}
+            value={customBudget ? formatRupiah(`${customBudget}`) : ''}
             placeholder="e.g., 750000"
-            onChangeText={(text: string) => setCustomBudget(Number(text))}
+            onChangeText={handleChangeCustomBudget}
           />
 
           <Text
@@ -478,6 +479,7 @@ const StepCompleteDiscover = ({
 const DiscoverScreen: React.FC = () => {
   const {
     pagerRef,
+    scrollRef,
     interestsList,
     budgetList,
     days,
@@ -497,8 +499,8 @@ const DiscoverScreen: React.FC = () => {
     handleDaysChange,
     handleNightsChange,
     toggleExperience,
-    setCustomBudget,
     onSelectBudget,
+    handleChangeCustomBudget,
     handleAdultsChange,
     handleChildrensChange,
     goCustomPreferences,
@@ -552,6 +554,7 @@ const DiscoverScreen: React.FC = () => {
 
         <View key="2" style={styles.container}>
           <ScrollView
+            ref={scrollRef}
             nestedScrollEnabled
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.content}
@@ -576,7 +579,7 @@ const DiscoverScreen: React.FC = () => {
               budgetList={budgetList}
               customBudget={customBudget}
               selectedBudgetIds={selectedBudgetIds}
-              setCustomBudget={setCustomBudget}
+              handleChangeCustomBudget={handleChangeCustomBudget}
               onSelectBudget={onSelectBudget}
               onContinue={goNext}
             />

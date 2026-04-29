@@ -47,6 +47,40 @@ const handlerClearItem = async () => {
   } catch (error) {}
 };
 
+const formatRupiah = (range: string) => {
+  if (!range || range === 'NaN') return '-';
+
+  const format = (value: number) =>
+    new Intl.NumberFormat('id-ID').format(value);
+
+  // Less than
+  if (range.startsWith('<')) {
+    const value = Number(range.replace('<', ''));
+    if (isNaN(value)) return '-';
+    return `< Rp. ${format(value)}`;
+  }
+
+  // Greater than
+  if (range.startsWith('>')) {
+    const value = Number(range.replace('>', ''));
+    if (isNaN(value)) return '-';
+    return `> Rp. ${format(value)}`;
+  }
+
+  // Range
+  if (range.includes('-')) {
+    const [min, max] = range.split('-').map(Number);
+    if (isNaN(min) || isNaN(max)) return '-';
+    return `Rp. ${format(min)} - Rp. ${format(max)}`;
+  }
+
+  // Single value
+  const value = Number(range);
+  if (isNaN(value)) return '-';
+
+  return `Rp. ${format(value)}`;
+};
+
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('window').width;
@@ -62,4 +96,5 @@ export {
   handlerSetItem,
   handlerRemoveItem,
   handlerClearItem,
+  formatRupiah,
 };

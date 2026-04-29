@@ -1,11 +1,12 @@
 import { Text } from '@components';
 import { Colors } from '@constants/colors';
 import { globalStyles } from '@constants/globalStyles';
-import { FlatList, View } from 'react-native';
+import { FlatList, Linking, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import MaterialDesignIcons, {
   MaterialDesignIconsIconName,
 } from '@react-native-vector-icons/material-design-icons';
+import { useCallback } from 'react';
 
 type OverviewTabProps = {
   data: DestinationItem;
@@ -38,6 +39,11 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
       desc: data?.website,
     },
   ];
+
+  const handleOpenWebsite = useCallback((url: string) => {
+    return Linking.openURL(url);
+  }, []);
+
   return (
     <View style={globalStyles?.gap16}>
       {data?.about ? (
@@ -72,13 +78,22 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
                   type="bold-base"
                   color={Colors.neutral.base}
                 />
-                <Text
-                  text={item?.desc ?? ''}
-                  type="regular-base"
-                  color={Colors.neutral.secondary}
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  style={{ marginRight: 24 }}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    item?.label === 'Website'
+                      ? handleOpenWebsite(item?.desc ?? '')
+                      : null
+                  }
+                  disabled={item?.label !== 'Website'}
+                >
+                  <Text
+                    text={item?.desc ?? ''}
+                    type="regular-base"
+                    color={Colors.neutral.secondary}
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{ marginRight: 24 }}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           );

@@ -5,6 +5,7 @@ export const AUTH_PREFIX = 'auth';
 export const USERS_PREFIX = 'users/me';
 export const DESTINATIONS_PREFIX = 'destinations';
 export const DISCOVERY_PREFIX = 'discovery';
+export const ITINERARIES_PREFIX = 'itineraries';
 
 export const URL_PATH = {
   // MARK: AUTH
@@ -60,6 +61,13 @@ export const URL_PATH = {
   // MARK: DISCOVERY
   discovery: {
     generateItinerary: `${API_PREFIX}/${DISCOVERY_PREFIX}/generate-itinerary`,
+  },
+  // MARK: ITINERARIES
+  itineraries: {
+    list: `${API_PREFIX}/${ITINERARIES_PREFIX}`,
+    detail: ({ itineraryId }: { itineraryId: string }) => {
+      return `${API_PREFIX}/${ITINERARIES_PREFIX}/${itineraryId}`;
+    },
   },
   // MARK: MASTER
   master: {

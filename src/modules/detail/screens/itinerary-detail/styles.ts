@@ -98,4 +98,11 @@ export const styles = StyleSheet.create({
   chevronContainer: {
     paddingRight: 12,
   },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 48,
+  },
 });
