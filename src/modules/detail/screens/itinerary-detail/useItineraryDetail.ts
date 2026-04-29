@@ -1,17 +1,39 @@
+import { apiGet } from '@api';
+import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
+import { useQuery } from '@tanstack/react-query';
 
 const useItineraryDetail = () => {
   const { getRouteParams, navigation, navigateScreen } = useNavigate();
-  const { data } = getRouteParams<ItineraryDetailScreenProps>();
+  const { itineraryId } = getRouteParams<ItineraryDetailScreenProps>();
 
-  const onNavigatePlace = (destination: DestinationItem) => {
+  const {
+    data: detailItineraryData,
+    isPending: isLoadingDetailItinerary,
+    // isError: isErrorDetailtinerary,
+  } = useQuery({
+    queryKey: [`detail-itinerary-${itineraryId}`],
+    queryFn: () =>
+      apiGet({
+        url: URL_PATH.itineraries.detail({ itineraryId }),
+      }).then((res: DetailItineraryResponse) => {
+        return res?.data ?? {};
+      }),
+  });
+
+  const onNavigatePlace = (destinationId: string) => {
     navigateScreen('Detail', {
       screen: 'DestinationDetailScreen',
-      params: { destinationId: destination?.id ?? '' },
+      params: { destinationId },
     });
   };
 
-  return { data, navigation, onNavigatePlace };
+  return {
+    navigation,
+    detailItineraryData,
+    isLoadingDetailItinerary,
+    onNavigatePlace,
+  };
 };
 
 export default useItineraryDetail;

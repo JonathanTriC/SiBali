@@ -135,13 +135,13 @@ const DestinationDetailScreen: React.FC = () => {
             </View>
           ) : (
             <View style={globalStyles.gap8}>
-              <View style={globalStyles.flexRowBetween}>
+              <View style={[globalStyles.flexRowBetween, globalStyles.gap8]}>
                 <Text
                   text={destinationDetail?.name || ''}
                   type="bold-xl"
                   color={Colors.neutral.base}
                   numberOfLines={2}
-                  style={{ width: '80%' }}
+                  style={globalStyles.flex1}
                 />
                 {destinationDetail?.categories?.name && (
                   <View style={styles.badgeContainer}>

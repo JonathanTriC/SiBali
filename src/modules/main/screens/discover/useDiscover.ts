@@ -3,7 +3,8 @@ import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
 import { useFocusEffect } from '@react-navigation/native';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ScrollView } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 const useDiscover = () => {
@@ -25,6 +26,7 @@ const useDiscover = () => {
   const [customPreferences, setCustomPreferences] = useState<string>('');
 
   const pagerRef = useRef<PagerView>(null);
+  const scrollRef = useRef<ScrollView>(null);
 
   const totalSteps = 6;
   const isMinSelectedExperience = selectedExperienceIds.length >= 1;
@@ -132,6 +134,12 @@ const useDiscover = () => {
     setSelectedBudgetIds(id);
   };
 
+  const handleChangeCustomBudget = (text: string) => {
+    const numeric = text.replace(/\D/g, '');
+
+    setCustomBudget(Number(numeric) || 0);
+  };
+
   // MARK: Step Four
   const handleAdultsChange = (val: number) => setAdults(val);
   const handleChildrensChange = (val: number) => setChildrens(val);
@@ -188,6 +196,10 @@ const useDiscover = () => {
 
   const onStartOver = () => resetAll();
 
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  }, [currentStep]);
+
   useFocusEffect(
     useCallback(() => {
       resetAll();
@@ -196,6 +208,7 @@ const useDiscover = () => {
 
   return {
     pagerRef,
+    scrollRef,
     interestsList,
     budgetList,
     days,
@@ -211,12 +224,12 @@ const useDiscover = () => {
     customPreferences,
     isLoadingSubmitGenerateItinerary,
     setCurrentStep,
-    setCustomBudget,
     setCustomPreferences,
     handleDaysChange,
     handleNightsChange,
     toggleExperience,
     onSelectBudget,
+    handleChangeCustomBudget,
     handleAdultsChange,
     handleChildrensChange,
     goCustomPreferences,

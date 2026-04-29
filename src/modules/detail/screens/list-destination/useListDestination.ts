@@ -1,16 +1,10 @@
 import { apiGet } from '@api';
 import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 const useItineraryDetail = () => {
   const { getRouteParams, navigation, navigateScreen } = useNavigate();
-  const queryClient = useQueryClient();
   const { title, type, categoryId } =
     getRouteParams<ListDestinationScreenProps>();
 
@@ -25,7 +19,7 @@ const useItineraryDetail = () => {
     data: destinationsByCategory,
     isLoading: isLoadingDestinationsByCategory,
   } = useQuery({
-    queryKey: ['destinations-by-category'],
+    queryKey: [`destinations-by-category-${categoryId}`],
     queryFn: () =>
       apiGet({
         url: URL_PATH.destinations.list({ limit: 10, offset: 0, categoryId }),
@@ -52,17 +46,6 @@ const useItineraryDetail = () => {
     type === 'categories' ? destinationsByCategory : trendingDestinations;
   const isLoading =
     isLoadingDestinationsByCategory || isLoadingTrendingDestinations;
-
-  useEffect(() => {
-    return () => {
-      queryClient.resetQueries({
-        queryKey: ['trending-all'],
-      });
-      queryClient.resetQueries({
-        queryKey: ['destinations-by-category'],
-      });
-    };
-  }, [queryClient]);
 
   return {
     title,
