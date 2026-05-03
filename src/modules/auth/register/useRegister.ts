@@ -7,7 +7,7 @@ import { apiPostWithoutToken } from '@api';
 import { useCallback, useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
 import { URL_PATH } from '@constants/url';
-import { COUNTRIES, handlerSetItem, Keys } from '@constants';
+import { COUNTRIES, handlerSetItem, Keys, showErrorToast } from '@constants';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 
@@ -72,7 +72,7 @@ const useRegister = () => {
       const data = await apiPostWithoutToken({
         url: `${URL_PATH.auth.register}`,
         body,
-        tags: 'registerAuth',
+        // tags: 'registerAuth',
       });
 
       return data?.data;
@@ -82,13 +82,8 @@ const useRegister = () => {
       handleNavigateInterests(data);
     },
     onError: data => {
-      console.log('Register failed! Error:', data?.data?.errors);
-      return data?.data?.errors?.map(item => {
-        return setError(item?.field as FormType, {
-          type: 'manual',
-          message: item.message,
-        });
-      });
+      console.log('Register failed! Error:', data?.data);
+      return showErrorToast(data?.data?.message ?? '', 'top');
     },
   });
 

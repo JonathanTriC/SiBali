@@ -150,6 +150,43 @@ const LoginScreen: React.FC = () => {
                 }
               />
             </View>
+
+            <View style={[globalStyles.gap20, { marginBottom: 20 }]}>
+              <View>
+                <Text textAlign="center">
+                  <Text
+                    text="By creating an account, you agree to our "
+                    type="regular-base"
+                    color={Colors.neutral.secondary}
+                  />
+                  <Text
+                    text="Terms"
+                    type="regular-lg"
+                    color={Colors.primary.base}
+                    onPress={() => {}}
+                  />
+                  <Text
+                    text=" and "
+                    type="regular-base"
+                    color={Colors.neutral.secondary}
+                  />
+                  <Text
+                    text="Privacy Policy"
+                    type="regular-lg"
+                    color={Colors.primary.base}
+                    onPress={() => {}}
+                  />
+                </Text>
+              </View>
+
+              {/* Copyright */}
+              <Text
+                text="© 2026 BINUS University. All rights reserved."
+                type="regular-sm"
+                color={Colors.neutral.secondary}
+                textAlign="center"
+              />
+            </View>
           </View>
         </View>
       </KeyboardAwareScrollView>
