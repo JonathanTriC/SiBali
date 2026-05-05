@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
 import { createMMKV } from 'react-native-mmkv';
+import Toast from 'react-native-toast-message';
 
 const storage = createMMKV({
   id: 'app-storage',
@@ -81,6 +82,33 @@ const formatRupiah = (range: string) => {
   return `Rp. ${format(value)}`;
 };
 
+const showSuccessToast = (message: string) => {
+  return Toast.show({
+    type: 'success',
+    text1: message,
+  });
+};
+
+const showErrorToast = (
+  message: string,
+  position: 'top' | 'bottom' = 'bottom',
+) => {
+  return Toast.show({
+    type: 'error',
+    text1: message,
+    position,
+    topOffset: 70,
+    visibilityTime: 5000,
+  });
+};
+
+const showDefaultToast = (message: string) => {
+  return Toast.show({
+    type: 'default',
+    text1: message,
+  });
+};
+
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('window').width;
@@ -97,4 +125,7 @@ export {
   handlerRemoveItem,
   handlerClearItem,
   formatRupiah,
+  showSuccessToast,
+  showErrorToast,
+  showDefaultToast,
 };

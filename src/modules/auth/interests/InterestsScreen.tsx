@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Button, LoadingModal, Text } from '@components';
+import { Button, SkeletonLoading, Text } from '@components';
 import { Colors } from '@constants/colors';
 import { globalStyles } from '@constants/globalStyles';
 import MaterialDesignIcons, {
@@ -9,14 +9,15 @@ import React from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import useInterests from './useInterests';
+import { screenWidth } from '@constants';
 
 const InterestsScreen: React.FC = () => {
   const {
     isFromRegister,
     interestsList,
-    isLoadingInterestsList,
-    isLoadingSubmitUserInterests,
-    isLoadingUserInterest,
+    // isLoadingInterestsList,
+    // isLoadingSubmitUserInterests,
+    // isLoadingUserInterest,
     selectedIds,
     isMinSelected,
     toggleInterest,
@@ -29,13 +30,15 @@ const InterestsScreen: React.FC = () => {
     <View style={styles.screen}>
       {/* Header */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => popScreen()}>
-          <MaterialDesignIcons
-            name="arrow-left"
-            size={24}
-            color={Colors.neutral.base}
-          />
-        </TouchableOpacity>
+        {!isFromRegister ? (
+          <TouchableOpacity onPress={() => popScreen()}>
+            <MaterialDesignIcons
+              name="arrow-left"
+              size={24}
+              color={Colors.neutral.base}
+            />
+          </TouchableOpacity>
+        ) : null}
 
         <View style={globalStyles.flex1}>
           {isFromRegister ? (
@@ -74,6 +77,25 @@ const InterestsScreen: React.FC = () => {
           style={globalStyles.flex1}
           contentContainerStyle={[globalStyles.gap12, { paddingBottom: 120 }]}
           columnWrapperStyle={globalStyles.gap12}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => {
+            return (
+              <View style={globalStyles.gap12}>
+                {Array.from({ length: 10 }, (_, index) => (
+                  <View key={`col-${index}`} style={styles.loading}>
+                    {Array.from({ length: 2 }, (_, index) => (
+                      <SkeletonLoading
+                        key={`row-${index}`}
+                        height={50}
+                        width={screenWidth / 2 - 28}
+                        borderRadius={10}
+                      />
+                    ))}
+                  </View>
+                ))}
+              </View>
+            );
+          }}
           renderItem={({ item }) => {
             if (!item?.id) return null;
             const isActive = selectedIds.includes(item?.id);
@@ -109,23 +131,23 @@ const InterestsScreen: React.FC = () => {
                   ) : null}
                   <Text text={item.name} />
                 </View>
-                <View
-                  style={[
-                    styles.checkInterestIcon,
-                    {
-                      backgroundColor: isActive
-                        ? Colors.primary.base
-                        : 'transparent',
-                      borderColor: isActive ? Colors.white : 'transparent',
-                    },
-                  ]}
-                >
-                  <MaterialDesignIcons
-                    name="check"
-                    size={16}
-                    color={Colors.white}
-                  />
-                </View>
+                {isActive ? (
+                  <View
+                    style={[
+                      styles.checkInterestIcon,
+                      {
+                        backgroundColor: Colors.primary.base,
+                        borderColor: Colors.white,
+                      },
+                    ]}
+                  >
+                    <MaterialDesignIcons
+                      name="check"
+                      size={16}
+                      color={Colors.white}
+                    />
+                  </View>
+                ) : null}
               </TouchableOpacity>
             );
           }}
@@ -141,9 +163,9 @@ const InterestsScreen: React.FC = () => {
         </View>
       </View>
 
-      <LoadingModal isVisible={isLoadingUserInterest} />
+      {/* <LoadingModal isVisible={isLoadingUserInterest} />
       <LoadingModal isVisible={isLoadingInterestsList} />
-      <LoadingModal isVisible={isLoadingSubmitUserInterests} />
+      <LoadingModal isVisible={isLoadingSubmitUserInterests} /> */}
     </View>
   );
 };

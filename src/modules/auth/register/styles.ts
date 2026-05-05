@@ -41,12 +41,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  termsConditionContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 40,
-  },
   separator: {
     height: 1,
     width: '100%',

@@ -64,4 +64,9 @@ export const styles = StyleSheet.create({
     paddingTop: 16,
     backgroundColor: Colors.white,
   },
+  loading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
 });
