@@ -138,7 +138,6 @@ const useHome = () => {
     isError: isErrorTrendingDestinations,
     refetch: refetchTrendingDestinations,
   } = trendingQueries;
-
   const onNavigateDetail = ({ item }: { item: DestinationItem }) => {
     return navigateScreen('Detail', {
       screen: 'DestinationDetailScreen',
