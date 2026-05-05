@@ -133,11 +133,13 @@ export const useGeolocation = () => {
           setLocation(updatedLocation);
           return updatedLocation;
         } else {
+          setIsLoading(false);
           throw new Error('Failed to get location information');
         }
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : 'Unknown error';
+        setIsLoading(false);
         setError(`Error getting city information: ${errorMessage}`);
         console.error(err);
         return null;

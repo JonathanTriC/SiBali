@@ -33,9 +33,9 @@ const useProfile = () => {
   const userData = handlerGetAndParseJSON<User>(Keys.userData);
 
   const dummyUser = {
-    visited: 12,
-    saved: 24,
-    reviews: 8,
+    visited: 0,
+    saved: 0,
+    reviews: 0,
   };
 
   const toggleModalAbout = useCallback(() => {

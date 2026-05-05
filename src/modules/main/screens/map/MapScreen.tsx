@@ -189,21 +189,29 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const MapScreen: React.FC = () => {
   const {
     location,
-    isLoading,
     error,
     webviewRef,
     nearbyPlaces,
     routeLoading,
     selectedPlace,
+    isLoadingNearbyDestinations,
     setSelectedPlace,
     fetchRoute,
     handleMessage,
     handleClose,
     handleCenterMap,
     getDistanceKm,
+    onNavigateDetail,
   } = useMap();
 
   const renderEmptyNearbyDestinations = useMemo(() => {
+    if (isLoadingNearbyDestinations) {
+      return (
+        <View style={{ padding: 20 }}>
+          <ActivityIndicator color={Colors.primary.base} />
+        </View>
+      );
+    }
     return (
       <Text
         text="Nothing nearby within 15 km right now."
@@ -212,7 +220,7 @@ const MapScreen: React.FC = () => {
         style={{ textAlign: 'center' }}
       />
     );
-  }, []);
+  }, [isLoadingNearbyDestinations]);
 
   return (
     <View style={styles.container}>
@@ -255,17 +263,27 @@ const MapScreen: React.FC = () => {
         </View>
       )}
 
-      {isLoading && (
+      {/* {isLoading && (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator color={Colors.primary.base} />
         </View>
-      )}
+      )} */}
 
       {error !== null && (
         <View style={styles.errorOverlay}>
           <Text
             text="Location access is required to show your position on the map."
             type="bold-xl"
+          />
+        </View>
+      )}
+
+      {location === null && (
+        <View style={styles.errorOverlay}>
+          <Text
+            text="Failed to get location. Please ensure location services are enabled and try again."
+            type="bold-xl"
+            textAlign="center"
           />
         </View>
       )}
@@ -279,11 +297,11 @@ const MapScreen: React.FC = () => {
 
         <FlatList
           data={nearbyPlaces}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item?.id ?? ''}
           showsVerticalScrollIndicator={false}
           style={styles.placesList}
           contentContainerStyle={
-            nearbyPlaces.length === 0 && {
+            nearbyPlaces?.length === 0 && {
               flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
@@ -295,8 +313,8 @@ const MapScreen: React.FC = () => {
               ? getDistanceKm(
                   location.latitude,
                   location.longitude,
-                  place.latitude,
-                  place.longitude,
+                  place?.latitude ?? 0,
+                  place?.longitude ?? 0,
                 )
               : 0;
 
@@ -341,7 +359,7 @@ const MapScreen: React.FC = () => {
                     style={styles.btnSeeDetail}
                     textStyle={{ fontSize: 14 }}
                     action={() => {
-                      console.log('See detail for:', place.name);
+                      onNavigateDetail({ item: place });
                     }}
                   />
                 </View>

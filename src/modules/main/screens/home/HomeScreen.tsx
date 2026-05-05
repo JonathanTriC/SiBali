@@ -9,7 +9,7 @@ import MaterialDesignIcons, {
   MaterialDesignIconsIconName,
 } from '@react-native-vector-icons/material-design-icons';
 import useHome from './useHome';
-import { RecommendedCard } from '@modules/main/components';
+import { NearbyPlacesCard, RecommendedCard } from '@modules/main/components';
 import { screenWidth } from '@constants';
 
 const HomeScreen: React.FC = () => {
@@ -22,7 +22,9 @@ const HomeScreen: React.FC = () => {
     trendingDestinations,
     isLoadingTrendingDestinations,
     isErrorTrendingDestinations,
-    // dummyRecommended,
+    nearbyDestinations,
+    isLoadingNearbyDestinations,
+    isErrorNearbyDestinations,
     navigateScreen,
     onNavigateDestinationByCategories,
     onNavigateAllTrending,
@@ -31,7 +33,7 @@ const HomeScreen: React.FC = () => {
 
   const renderPopularCategories = useCallback(
     (isError: boolean) => {
-      if (isError) return null;
+      if (isError || !popularCategories) return null;
 
       return (
         <View>
@@ -93,7 +95,7 @@ const HomeScreen: React.FC = () => {
 
   const renderRecommended = useCallback(
     (isError: boolean) => {
-      if (isError) return null;
+      if (isError || !trendingDestinations) return null;
 
       return (
         <View>
@@ -152,6 +154,55 @@ const HomeScreen: React.FC = () => {
       onNavigateAllTrending,
       onNavigateDetail,
     ],
+  );
+
+  const rendeNearby = useCallback(
+    (isError: boolean) => {
+      if (isError || !nearbyDestinations) return null;
+
+      return (
+        <View>
+          {isLoadingNearbyDestinations ? (
+            <View style={styles.loadingRowContainer}>
+              {Array.from({ length: 4 }, (_, index) => (
+                <SkeletonLoading
+                  key={index}
+                  height={100}
+                  width={screenWidth - 42}
+                  borderRadius={10}
+                />
+              ))}
+            </View>
+          ) : (
+            <View style={styles.gap16}>
+              <Text
+                text="Nearby Places"
+                type="bold-lg"
+                color={Colors.neutral.base}
+                style={globalStyles.paddingH24}
+              />
+
+              <FlatList
+                scrollEnabled={false}
+                data={nearbyDestinations}
+                keyExtractor={item => item?.id ?? ''}
+                contentContainerStyle={[
+                  globalStyles.gap12,
+                  globalStyles.paddingH24,
+                ]}
+                renderItem={({ item }) => (
+                  <NearbyPlacesCard
+                    item={item}
+                    onNavigateDetail={() => onNavigateDetail({ item })}
+                  />
+                )}
+              />
+            </View>
+          )}
+        </View>
+      );
+    },
+    [isLoadingNearbyDestinations, nearbyDestinations, onNavigateDetail],
   );
 
   return (
@@ -220,25 +271,7 @@ const HomeScreen: React.FC = () => {
           {renderRecommended(isErrorTrendingDestinations)}
 
           {/* Nearby Places */}
-          {/* <View style={styles.gap16}>
-            <Text
-              text="Nearby Places"
-              type="bold-lg"
-              color={Colors.neutral.base}
-              style={globalStyles.paddingH24}
-            />
-
-            <FlatList
-              scrollEnabled={false}
-              data={dummyRecommended}
-              keyExtractor={item => item.id.toString()}
-              contentContainerStyle={[
-                globalStyles.gap12,
-                globalStyles.paddingH24,
-              ]}
-              renderItem={({ item }) => <NearbyPlacesCard item={item} />}
-            />
-          </View> */}
+          {rendeNearby(isErrorNearbyDestinations)}
         </View>
       </ScrollView>
     </View>

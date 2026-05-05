@@ -25,6 +25,9 @@ export const URL_PATH = {
     detail: ({ destinationId }: { destinationId: string }) => {
       return `${API_PREFIX}/${DESTINATIONS_PREFIX}/${destinationId}`;
     },
+    nearby: ({ lat, lng }: { lat: number; lng: number }) => {
+      return `${API_PREFIX}/${DESTINATIONS_PREFIX}/nearby?lat=${lat}&lng=${lng}`;
+    },
     list: ({
       limit,
       offset,

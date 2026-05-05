@@ -36,13 +36,13 @@ const ProfileScreen: React.FC = () => {
                 color={Colors.white}
               />
             </View>
-            <View style={styles.editBadge}>
+            {/* <View style={styles.editBadge}>
               <MaterialDesignIcons
                 name="pencil"
                 size={12}
                 color={Colors.neutral.secondary}
               />
-            </View>
+            </View> */}
           </View>
 
           <Text

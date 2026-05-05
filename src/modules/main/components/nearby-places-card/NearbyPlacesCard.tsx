@@ -9,7 +9,7 @@ const NearbyPlacesCard = ({
   item,
   onNavigateDetail,
 }: {
-  item: DestinationItem;
+  item: DestinationItem | NearbyDestinations;
   onNavigateDetail: () => void;
 }) => (
   <TouchableOpacity style={styles.container} onPress={onNavigateDetail}>

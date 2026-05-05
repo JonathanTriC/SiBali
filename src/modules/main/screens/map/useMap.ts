@@ -1,35 +1,18 @@
-import { useGeolocation } from '@hooks';
+import { useGeolocation, useNavigate } from '@hooks';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import WebView from 'react-native-webview';
 import { MAPBOX_ACCESS_TOKEN } from '@env';
-
-const PLACES = [
-  {
-    id: '1',
-    name: 'Atlas Beach Club',
-    latitude: -8.66534866092515,
-    longitude: 115.13814513908517,
-  },
-  {
-    id: '2',
-    name: 'FINNS Beach Club',
-    latitude: -8.66655306475092,
-    longitude: 115.13939839722644,
-  },
-  {
-    id: '3',
-    name: 'Tanah Lot Temple',
-    latitude: -8.615637222340235,
-    longitude: 115.08728362807646,
-  },
-];
-
-type Place = (typeof PLACES)[number];
+import { useQuery } from '@tanstack/react-query';
+import { apiGet } from '@api';
+import { URL_PATH } from '@constants/url';
 
 const useMap = () => {
   const { location, isLoading, error, getCurrentLocation } = useGeolocation();
+  const { navigateScreen } = useNavigate();
 
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<NearbyDestinations | null>(
+    null,
+  );
   const [routeCoords, setRouteCoords] = useState<[number, number][] | null>(
     null,
   );
@@ -52,26 +35,42 @@ const useMap = () => {
     [],
   );
 
+  const {
+    data: nearbyDestinations,
+    isLoading: isLoadingNearbyDestinations,
+    // isError: isErrorNearbyDestinations,
+  } = useQuery({
+    queryKey: ['nearby-destinations', location?.latitude, location?.longitude],
+    queryFn: () =>
+      apiGet({
+        url: URL_PATH.destinations.nearby({
+          lat: location?.latitude ?? 0,
+          lng: location?.longitude ?? 0,
+        }),
+      }).then((res: NearbyDestinationResponse) => res?.data),
+    enabled: !!location?.latitude && !!location?.longitude,
+  });
+
   const nearbyPlaces = useMemo(() => {
     if (!location) return [];
-    return PLACES.filter(
+    return nearbyDestinations?.filter(
       place =>
         getDistanceKm(
           location.latitude,
           location.longitude,
-          place.latitude,
-          place.longitude,
+          place?.latitude ?? 0,
+          place?.longitude ?? 0,
         ) <= 15,
     );
-  }, [location, getDistanceKm]);
+  }, [nearbyDestinations, location, getDistanceKm]);
 
   const fetchRoute = useCallback(
-    async (place: Place) => {
+    async (place: NearbyDestinations) => {
       if (!location) return;
       setRouteLoading(true);
       try {
         const origin = `${location.longitude},${location.latitude}`;
-        const destination = `${place.longitude},${place.latitude}`;
+        const destination = `${place?.longitude ?? 0},${place?.latitude ?? 0}`;
         const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin};${destination}?geometries=geojson&access_token=${MAPBOX_ACCESS_TOKEN}`;
         const res = await fetch(url);
         const data = await res.json();
@@ -96,7 +95,7 @@ const useMap = () => {
       try {
         const message = JSON.parse(event.nativeEvent.data);
         if (message.type === 'MARKER_PRESS') {
-          const place = nearbyPlaces.find(p => p.id === message.payload.id);
+          const place = nearbyPlaces?.find(p => p.id === message.payload.id);
           if (place) {
             setSelectedPlace(place);
             fetchRoute(place);
@@ -130,6 +129,13 @@ const useMap = () => {
     );
   }, [location]);
 
+  const onNavigateDetail = ({ item }: { item: NearbyDestinations }) => {
+    return navigateScreen('Detail', {
+      screen: 'DestinationDetailScreen',
+      params: { destinationId: item?.id ?? '' },
+    });
+  };
+
   useEffect(() => {
     if (!webviewRef.current) return;
 
@@ -160,12 +166,14 @@ const useMap = () => {
     nearbyPlaces,
     routeLoading,
     selectedPlace,
+    isLoadingNearbyDestinations,
     setSelectedPlace,
     fetchRoute,
     handleMessage,
     handleClose,
     handleCenterMap,
     getDistanceKm,
+    onNavigateDetail,
   };
 };
 
