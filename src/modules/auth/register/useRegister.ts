@@ -26,7 +26,7 @@ const formSchema = yup.object().shape({
 });
 
 type FormData = yup.InferType<typeof formSchema>;
-type FormType = 'name' | 'email' | 'date_of_birth' | 'nationality' | 'password';
+// type FormType = 'name' | 'email' | 'date_of_birth' | 'nationality' | 'password';
 
 const useRegister = () => {
   const { popScreen, navigateScreen } = useNavigate();

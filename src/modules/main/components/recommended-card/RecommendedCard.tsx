@@ -51,6 +51,18 @@ const RecommendedCard = ({
               color={Colors.white}
             />
           </View>
+          <View style={styles.rating}>
+            <MaterialDesignIcons
+              name="chart-line-variant"
+              size={14}
+              color={Colors.white}
+            />
+            <Text
+              text={`${item.view_count ?? '0'} Visits`}
+              type="bold-sm"
+              color={Colors.white}
+            />
+          </View>
           {/* <Text text={item.distance} type="bold-sm" color={Colors.white} /> */}
         </View>
       </View>

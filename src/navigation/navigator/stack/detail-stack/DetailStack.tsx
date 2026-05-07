@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   DestinationDetailScreen,
+  EditProfileScreen,
   ItineraryDetailScreen,
   ListDestinationScreen,
 } from '@modules/detail';
@@ -34,6 +35,10 @@ export const DetailStack: React.FC<DetailStackProps> = () => {
         <Stack.Screen
           name={'ListDestinationScreen'}
           component={ListDestinationScreen}
+        />
+        <Stack.Screen
+          name={'EditProfileScreen'}
+          component={EditProfileScreen}
         />
       </Stack.Navigator>
     </SafeAreaView>

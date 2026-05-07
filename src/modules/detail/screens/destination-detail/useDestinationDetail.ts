@@ -1,7 +1,8 @@
-import { apiGet } from '@api';
+import { apiGet, apiPost } from '@api';
 import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useFocusEffect } from '@react-navigation/native';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Linking, Platform } from 'react-native';
 
@@ -30,6 +31,15 @@ const useDestinationDetail = () => {
       enabled: true,
       retry: false,
     });
+
+  const { mutate: addCounterDestination } = useMutation({
+    mutationKey: ['add-counter-destination'],
+    mutationFn: async () => {
+      return apiPost({
+        url: URL_PATH.destinations.addCounter({ destinationId }),
+      });
+    },
+  });
 
   const extractLabelFromUrl = (url: string) => {
     try {
@@ -88,6 +98,14 @@ const useDestinationDetail = () => {
     destinationDetail?.latitude,
     destinationDetail?.longitude,
   ]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (destinationId) {
+        addCounterDestination();
+      }
+    }, [destinationId, addCounterDestination]),
+  );
 
   return {
     navigation,

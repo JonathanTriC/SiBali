@@ -1,3 +1,18 @@
+type EditProfileResponse = {
+  success?: boolean;
+  message?: string;
+  data?: EditProfile;
+};
+
+type EditProfile = {
+  id?: string;
+  name?: string;
+  email?: string;
+  date_of_birth?: Date;
+  nationality?: string;
+  created_at?: Date;
+};
+
 type InterestsListResponse = {
   success?: boolean;
   message?: string;

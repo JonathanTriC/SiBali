@@ -9,6 +9,7 @@ import { useNavigate } from '@hooks';
 import { useCallback, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiPost } from '@api';
+import { useFocusEffect } from '@react-navigation/native';
 
 type MenuSection = {
   title: string;
@@ -28,9 +29,14 @@ const useProfile = () => {
   const queryClient = useQueryClient();
 
   const [isShowAbout, setShowAbout] = useState<boolean>(false);
+  const [userData, setUserData] = useState<User | null>(null);
 
   const refreshToken = handlerGetItem(Keys.refreshToken);
-  const userData = handlerGetAndParseJSON<User>(Keys.userData);
+
+  const handleGetUserData = async () => {
+    const data = await handlerGetAndParseJSON<User>(Keys.userData);
+    return setUserData(data);
+  };
 
   const dummyUser = {
     visited: 0,
@@ -91,14 +97,15 @@ const useProfile = () => {
           id: 'edit-profile',
           icon: 'pencil-outline',
           label: 'Edit Profile',
-          onPress: () => {},
+          onPress: () =>
+            navigateScreen('Detail', { screen: 'EditProfileScreen' }),
         },
-        {
-          id: 'my-reviews',
-          icon: 'star-outline',
-          label: 'My Reviews',
-          onPress: () => {},
-        },
+        // {
+        //   id: 'my-reviews',
+        //   icon: 'star-outline',
+        //   label: 'My Reviews',
+        //   onPress: () => {},
+        // },
         {
           id: 'travel-preferences',
           icon: 'map-marker-outline',
@@ -113,27 +120,27 @@ const useProfile = () => {
         },
       ],
     },
-    {
-      title: 'Settings',
-      items: [
-        {
-          id: 'language',
-          icon: 'web',
-          label: 'Language',
-          rightLabel: 'English',
-          onPress: () => {},
-        },
-      ],
-    },
+    // {
+    //   title: 'Settings',
+    //   items: [
+    //     {
+    //       id: 'language',
+    //       icon: 'web',
+    //       label: 'Language',
+    //       rightLabel: 'English',
+    //       onPress: () => {},
+    //     },
+    //   ],
+    // },
     {
       title: 'Support',
       items: [
-        {
-          id: 'help-center',
-          icon: 'help-circle-outline',
-          label: 'Help Center',
-          onPress: () => {},
-        },
+        // {
+        //   id: 'help-center',
+        //   icon: 'help-circle-outline',
+        //   label: 'Help Center',
+        //   onPress: () => {},
+        // },
         {
           id: 'about',
           icon: 'information-outline',
@@ -143,6 +150,12 @@ const useProfile = () => {
       ],
     },
   ];
+
+  useFocusEffect(
+    useCallback(() => {
+      handleGetUserData();
+    }, []),
+  );
 
   return {
     userData,

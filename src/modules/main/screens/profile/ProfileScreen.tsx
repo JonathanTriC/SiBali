@@ -12,7 +12,6 @@ import { globalStyles } from '@constants/globalStyles';
 const ProfileScreen: React.FC = () => {
   const {
     userData,
-    dummyUser,
     menuSections,
     isShowAbout,
     isLoggingOut,
@@ -58,7 +57,7 @@ const ProfileScreen: React.FC = () => {
           />
 
           {/* Stats */}
-          <View style={styles.statsRow}>
+          {/* <View style={styles.statsRow}>
             <View style={styles.statItem}>
               <View style={[styles.statIconCircle, styles.statIconBlue]}>
                 <MaterialDesignIcons
@@ -118,7 +117,7 @@ const ProfileScreen: React.FC = () => {
                 color={Colors.neutral.secondary}
               />
             </View>
-          </View>
+          </View> */}
         </View>
 
         {/* Menu Sections */}
