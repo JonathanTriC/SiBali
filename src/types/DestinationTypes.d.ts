@@ -36,3 +36,24 @@ type Categories = {
   name?: string;
   icon_url?: null;
 };
+
+type GetDestinationReviewResponse = {
+  success?: boolean;
+  message?: string;
+  data?: DestinationReview[];
+};
+
+type DestinationReview = {
+  id?: string;
+  rating?: number;
+  comment?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  users?: Users;
+};
+
+type Users = {
+  id?: string;
+  name?: string;
+  profile_photo?: null;
+};
