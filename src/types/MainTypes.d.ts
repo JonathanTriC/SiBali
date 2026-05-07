@@ -44,6 +44,7 @@ type DestinationItem = {
   rating_count?: number;
   is_trending?: boolean;
   is_active?: boolean;
+  view_count?: number;
   created_at?: Date;
   updated_at?: Date;
   categories?: CategoriesItem;

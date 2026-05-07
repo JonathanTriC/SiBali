@@ -134,9 +134,11 @@ const useHome = () => {
     }
   }, [location, getCityFromCoordinates]);
 
-  useEffect(() => {
-    handleGetUserData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      handleGetUserData();
+    }, []),
+  );
 
   return {
     location,

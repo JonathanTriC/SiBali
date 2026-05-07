@@ -221,4 +221,57 @@ const apiPost: <T = any>(props: ApiProps) => Promise<T> = async (
   }
 };
 
-export { apiGet, apiGetWithoutToken, apiPost, apiPostWithoutToken };
+const apiPut: <T = any>(props: ApiProps) => Promise<T> = async (
+  props: ApiProps,
+) => {
+  try {
+    const fullResponse = props?.fullResponse ?? false;
+    const res = await client.put(props?.url, props?.body, {
+      ...props.config,
+      headers: props?.headers,
+    });
+
+    logApi({
+      nameFunction: 'apiPut',
+      tags: props?.tags,
+      body: props?.body,
+      res: res,
+    });
+
+    return Promise.resolve(fullResponse ? res : res.data);
+  } catch (e: any) {
+    if ((props.retry ?? 0) > 0) {
+      return await apiPost({
+        ...props,
+        retry: props.retry ? props.retry - 1 : 0,
+      });
+    }
+
+    if (e.response) {
+      console.log('🚀 ~ apiPut ~ status:', e.response.status);
+      console.log('🚀 ~ apiPut ~ data:', e.response.data);
+    } else if (e.request) {
+      console.log('🚀 ~ apiPut ~ request:', e.request);
+    } else {
+      console.log('🚀 ~ apiPut ~ message:', e.message);
+    }
+    const errData = e.response?.data ?? e.message;
+
+    logApi({
+      nameFunction: 'apiPut',
+      tags: props?.tags,
+      body: props?.body,
+      e: errData,
+    });
+
+    const errorData = {
+      status: e?.response?.status,
+      message: errData || 'Terjadi Kesalahan',
+      data: e?.response?.data,
+    };
+
+    return Promise.reject(errorData);
+  }
+};
+
+export { apiGet, apiGetWithoutToken, apiPost, apiPostWithoutToken, apiPut };

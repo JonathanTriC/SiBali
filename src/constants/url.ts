@@ -19,6 +19,7 @@ export const URL_PATH = {
   // MARK: USERS
   users: {
     interests: `${API_PREFIX}/${USERS_PREFIX}/interests`,
+    profile: `${API_PREFIX}/${USERS_PREFIX}/profile`,
   },
   // MARK: DESTINATIONS
   destinations: {
@@ -59,6 +60,9 @@ export const URL_PATH = {
       return `${API_PREFIX}/${DESTINATIONS_PREFIX}/trending${
         queryString ? `?${queryString}` : ''
       }`;
+    },
+    addCounter: ({ destinationId }: { destinationId: string }) => {
+      return `${API_PREFIX}/${DESTINATIONS_PREFIX}/${destinationId}/view`;
     },
   },
   // MARK: DISCOVERY

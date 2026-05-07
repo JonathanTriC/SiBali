@@ -170,6 +170,16 @@ const DestinationDetailScreen: React.FC = () => {
                   type="regular-base"
                   color={Colors.neutral.secondary}
                 />
+                <MaterialDesignIcons
+                  name="chart-line-variant"
+                  size={16}
+                  color={Colors.neutral.base}
+                />
+                <Text
+                  text={`${destinationDetail?.view_count ?? '0'} Visits`}
+                  type="regular-base"
+                  color={Colors.neutral.secondary}
+                />
               </View>
             </View>
           )}

@@ -15,4 +15,5 @@ type DetailStackParamList = {
   DestinationDetailScreen: DestinationDetailScreenProps;
   ItineraryDetailScreen: ItineraryDetailScreenProps;
   ListDestinationScreen: ListDestinationScreenProps;
+  EditProfileScreen: undefined;
 };

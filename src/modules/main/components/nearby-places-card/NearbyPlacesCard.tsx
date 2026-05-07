@@ -56,6 +56,18 @@ const NearbyPlacesCard = ({
             color={Colors.neutral.base}
           />
         </View>
+        <View style={styles.rating}>
+          <MaterialDesignIcons
+            name="chart-line-variant"
+            size={14}
+            color={Colors.neutral.base}
+          />
+          <Text
+            text={`${item.view_count ?? '0'} Visits`}
+            type="regular-sm"
+            color={Colors.neutral.base}
+          />
+        </View>
         {/* <Text
           text={item.distance}
           type="regular-sm"
