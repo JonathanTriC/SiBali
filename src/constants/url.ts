@@ -64,6 +64,9 @@ export const URL_PATH = {
     addCounter: ({ destinationId }: { destinationId: string }) => {
       return `${API_PREFIX}/${DESTINATIONS_PREFIX}/${destinationId}/view`;
     },
+    reviews: ({ destinationId }: { destinationId: string }) => {
+      return `${API_PREFIX}/${DESTINATIONS_PREFIX}/${destinationId}/reviews`;
+    },
   },
   // MARK: DISCOVERY
   discovery: {
