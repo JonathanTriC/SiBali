@@ -2,13 +2,14 @@ import { apiGet, apiPost } from '@api';
 import { URL_PATH } from '@constants/url';
 import { useNavigate } from '@hooks';
 import { useFocusEffect } from '@react-navigation/native';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 const useDiscover = () => {
   const { navigateScreen } = useNavigate();
+  const queryClient = useQueryClient();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [days, setDays] = useState(3);
@@ -24,6 +25,7 @@ const useDiscover = () => {
     'options',
   );
   const [customPreferences, setCustomPreferences] = useState<string>('');
+  const [itineraryId, setItineraryId] = useState<string>('');
 
   const pagerRef = useRef<PagerView>(null);
   const scrollRef = useRef<ScrollView>(null);
@@ -37,6 +39,18 @@ const useDiscover = () => {
     { id: 3, text: '>Rp. 1.000.000', range: '>1000000' },
     { id: 4, text: 'Custom', range: 'custom' },
   ];
+
+  const prefetchItinerary = async () => {
+    await queryClient.prefetchQuery({
+      queryKey: ['list-itineraries'],
+      queryFn: () =>
+        apiGet({
+          url: URL_PATH.itineraries.list,
+        }).then((res: ListItinerariesResponse) => {
+          return res?.data ?? [];
+        }),
+    });
+  };
 
   const { data: interestsList } = useQuery({
     queryKey: ['interests'],
@@ -73,8 +87,34 @@ const useDiscover = () => {
     },
     onSuccess: data => {
       console.log('Successfuly Generate Itinerary:', data);
+      setItineraryId(data?.id ?? '');
+    },
+    onError: error => {
+      console.error('Failed to Generate Itinerary:', error);
     },
   });
+
+  const { mutate: submitBackfillImages, isPending: isLoadingBackfillImages } =
+    useMutation({
+      mutationKey: ['backfill-images'],
+      mutationFn: async (id: string) => {
+        if (!id) return;
+
+        const data = await apiPost({
+          url: URL_PATH.itineraries.backfillImages({ itineraryId: id }),
+        });
+
+        return data?.data ?? {};
+      },
+      onSuccess: data => {
+        console.log('Successfuly Backfill Images:', data);
+        prefetchItinerary();
+        onViewItinerary();
+      },
+      onError: error => {
+        console.error('Failed to Backfill Images:', error);
+      },
+    });
 
   // MARK: Helpers
   const getSelectedInterests = () => {
@@ -157,6 +197,12 @@ const useDiscover = () => {
     submitGenerateItinerary();
   }, [submitGenerateItinerary]);
 
+  const handleBackfillImages = useCallback(() => {
+    if (itineraryId) {
+      submitBackfillImages(itineraryId);
+    }
+  }, [submitBackfillImages, itineraryId]);
+
   // MARK: Navigation
   const resetAll = () => {
     setCurrentStep(0);
@@ -223,6 +269,7 @@ const useDiscover = () => {
     stepFiveMode,
     customPreferences,
     isLoadingSubmitGenerateItinerary,
+    isLoadingBackfillImages,
     setCurrentStep,
     setCustomPreferences,
     handleDaysChange,
@@ -232,6 +279,7 @@ const useDiscover = () => {
     handleChangeCustomBudget,
     handleAdultsChange,
     handleChildrensChange,
+    handleBackfillImages,
     goCustomPreferences,
     goGenerateItinerary,
     goNext,

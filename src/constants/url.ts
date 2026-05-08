@@ -78,6 +78,9 @@ export const URL_PATH = {
     detail: ({ itineraryId }: { itineraryId: string }) => {
       return `${API_PREFIX}/${ITINERARIES_PREFIX}/${itineraryId}`;
     },
+    backfillImages: ({ itineraryId }: { itineraryId: string }) => {
+      return `${API_PREFIX}/${ITINERARIES_PREFIX}/${itineraryId}/backfill-images`;
+    },
   },
   // MARK: MASTER
   master: {

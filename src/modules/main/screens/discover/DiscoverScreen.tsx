@@ -7,7 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, CounterInput, Text, TextField } from '@components';
+import {
+  Button,
+  CounterInput,
+  LoadingModal,
+  Text,
+  TextField,
+} from '@components';
 import { styles } from './styles';
 import { HeaderDiscover } from '@modules/main/components';
 import { globalStyles } from '@constants/globalStyles';
@@ -494,6 +500,7 @@ const DiscoverScreen: React.FC = () => {
     stepFiveMode,
     customPreferences,
     isLoadingSubmitGenerateItinerary,
+    isLoadingBackfillImages,
     setCurrentStep,
     setCustomPreferences,
     handleDaysChange,
@@ -503,11 +510,11 @@ const DiscoverScreen: React.FC = () => {
     handleChangeCustomBudget,
     handleAdultsChange,
     handleChildrensChange,
+    handleBackfillImages,
     goCustomPreferences,
     goGenerateItinerary,
     goNext,
     goPrevious,
-    onViewItinerary,
     onStartOver,
   } = useDiscover();
 
@@ -634,12 +641,14 @@ const DiscoverScreen: React.FC = () => {
               isLoadingSubmitGenerateItinerary={
                 isLoadingSubmitGenerateItinerary
               }
-              onViewItinerary={onViewItinerary}
+              onViewItinerary={handleBackfillImages}
               onStartOver={onStartOver}
             />
           </ScrollView>
         </View>
       </PagerView>
+
+      <LoadingModal isVisible={isLoadingBackfillImages} />
     </View>
   );
 };

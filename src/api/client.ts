@@ -1,6 +1,10 @@
 import { BASE_URL } from '@constants/url';
 import { handlerGetItem, handlerSetItem, Keys } from '@constants';
-import axios, { CreateAxiosDefaults, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  CreateAxiosDefaults,
+  AxiosError,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
 const baseConfig: CreateAxiosDefaults<any> = {
   baseURL: BASE_URL,
@@ -8,7 +12,7 @@ const baseConfig: CreateAxiosDefaults<any> = {
     accept: 'application/json',
   },
   /* other custom settings */
-  timeout: 10000,
+  timeout: 60000,
 };
 
 const client = axios.create(baseConfig);
